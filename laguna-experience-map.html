@@ -1,0 +1,5382 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Laguna Experience</title>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --green:#173f2c;
+    --green2:#245d43;
+    --sage:#7f9f82;
+    --cream:#f4efdf;
+    --white:#ffffff;
+    --glass:rgba(12,35,25,.78);
+    --border:rgba(255,255,255,.15);
+}
+
+body{
+    overflow:hidden;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#102c20;
+    color:white;
+}
+
+#game{
+    position:fixed;
+    inset:0;
+}
+
+canvas{
+    display:block;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+#loading{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #245d43 0%,
+            #102c20 55%,
+            #071710 100%
+        );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    transition:.6s;
+}
+
+.loading-box{
+    width:min(420px,90%);
+    text-align:center;
+}
+
+.loading-logo{
+    font-size:54px;
+    font-weight:800;
+    letter-spacing:-3px;
+}
+
+.loading-logo span{
+    color:#d8d0a7;
+}
+
+.loading-sub{
+    margin-top:8px;
+    opacity:.65;
+    font-size:14px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+}
+
+.progress{
+    margin-top:30px;
+    height:5px;
+    background:rgba(255,255,255,.15);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:#d8d0a7;
+    transition:.2s;
+}
+
+.loading-text{
+    margin-top:12px;
+    font-size:12px;
+    opacity:.6;
+}
+
+/* =========================
+   GLASS
+========================= */
+
+.glass{
+    background:var(--glass);
+    border:1px solid var(--border);
+
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.25);
+}
+
+/* =========================
+   BRAND
+========================= */
+
+#brand{
+    position:fixed;
+    z-index:20;
+
+    left:22px;
+    top:20px;
+
+    padding:14px 18px;
+
+    border-radius:16px;
+}
+
+.brand-title{
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:-1px;
+}
+
+.brand-title span{
+    color:#b9cda6;
+}
+
+.brand-sub{
+    margin-top:3px;
+
+    font-size:10px;
+    opacity:.6;
+
+    letter-spacing:2px;
+    text-transform:uppercase;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+#status{
+    position:fixed;
+    z-index:20;
+
+    right:22px;
+    top:20px;
+
+    padding:14px 17px;
+
+    border-radius:16px;
+
+    min-width:220px;
+}
+
+.status-row{
+    display:flex;
+    justify-content:space-between;
+
+    gap:20px;
+
+    font-size:12px;
+
+    margin-bottom:7px;
+}
+
+.status-row:last-child{
+    margin-bottom:0;
+}
+
+.status-label{
+    opacity:.55;
+}
+
+.status-value{
+    font-weight:700;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+#search-panel{
+    position:fixed;
+    z-index:20;
+
+    left:22px;
+    top:115px;
+
+    width:260px;
+
+    max-height:65vh;
+
+    border-radius:18px;
+
+    overflow:hidden;
+}
+
+.search-head{
+    padding:14px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.search-title{
+    font-size:13px;
+    font-weight:700;
+
+    margin-bottom:10px;
+}
+
+#search{
+    width:100%;
+
+    border:none;
+    outline:none;
+
+    color:white;
+
+    background:
+        rgba(255,255,255,.08);
+
+    padding:10px 12px;
+
+    border-radius:10px;
+}
+
+#search::placeholder{
+    color:
+        rgba(255,255,255,.5);
+}
+
+#business-list{
+    max-height:45vh;
+
+    overflow:auto;
+
+    padding:7px;
+}
+
+.business-item{
+    padding:10px;
+
+    border-radius:11px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.business-item:hover{
+    background:
+        rgba(255,255,255,.09);
+
+    transform:
+        translateX(3px);
+}
+
+.business-item.active{
+    background:
+        rgba(216,208,167,.16);
+
+    border:
+        1px solid
+        rgba(216,208,167,.25);
+}
+
+.business-name{
+    font-size:12px;
+    font-weight:700;
+}
+
+.business-category{
+    margin-top:3px;
+
+    font-size:10px;
+
+    opacity:.5;
+}
+
+/* =========================
+   INFO
+========================= */
+
+#info{
+    position:fixed;
+    z-index:30;
+
+    right:22px;
+    top:130px;
+
+    width:330px;
+
+    padding:20px;
+
+    border-radius:20px;
+
+    transform:
+        translateX(380px);
+
+    transition:.35s;
+}
+
+#info.open{
+    transform:
+        translateX(0);
+}
+
+.info-close{
+    position:absolute;
+
+    right:13px;
+    top:10px;
+
+    border:none;
+
+    background:none;
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+}
+
+.info-category{
+    color:#b9cda6;
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+}
+
+#info-title{
+    font-size:25px;
+
+    margin-top:5px;
+}
+
+#info-description{
+    margin-top:12px;
+
+    line-height:1.6;
+
+    font-size:13px;
+
+    opacity:.75;
+}
+
+.info-status{
+    display:inline-block;
+
+    margin-top:14px;
+
+    padding:6px 10px;
+
+    background:
+        rgba(130,190,130,.15);
+
+    border:
+        1px solid
+        rgba(130,190,130,.2);
+
+    border-radius:20px;
+
+    font-size:10px;
+}
+
+.info-buttons{
+    display:flex;
+
+    gap:8px;
+
+    margin-top:18px;
+}
+
+.btn{
+    border:none;
+
+    cursor:pointer;
+
+    border-radius:10px;
+
+    padding:11px 14px;
+
+    font-weight:700;
+
+    font-size:11px;
+
+    transition:.2s;
+}
+
+.btn-primary{
+    background:#d8d0a7;
+
+    color:#173f2c;
+}
+
+.btn-secondary{
+    background:
+        rgba(255,255,255,.1);
+
+    color:white;
+}
+
+.btn:hover{
+    transform:
+        translateY(-2px);
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+#toolbar{
+    position:fixed;
+    z-index:20;
+
+    left:50%;
+    bottom:20px;
+
+    transform:
+        translateX(-50%);
+
+    display:flex;
+
+    gap:7px;
+
+    padding:8px;
+
+    border-radius:15px;
+}
+
+.tool{
+    width:40px;
+    height:40px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:.2s;
+}
+
+.tool:hover{
+    background:
+        rgba(255,255,255,.18);
+
+    transform:
+        translateY(-2px);
+}
+
+/* =========================
+   MINIMAP
+========================= */
+
+#minimap-box{
+    position:fixed;
+    z-index:20;
+
+    right:22px;
+    bottom:20px;
+
+    width:180px;
+
+    padding:8px;
+
+    border-radius:14px;
+}
+
+#minimap{
+    width:100%;
+    height:auto;
+
+    display:block;
+
+    border-radius:8px;
+
+    background:#244b35;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+#toast{
+    position:fixed;
+    z-index:100;
+
+    left:50%;
+    top:85px;
+
+    transform:
+        translate(-50%,-20px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    background:
+        rgba(10,25,18,.9);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    padding:11px 16px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    transition:.3s;
+}
+
+#toast.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+#mobile-search-toggle,
+#search-backdrop{
+    display:none;
+}
+
+@media(max-width:700px){
+    #mobile-search-toggle{
+        display:flex;
+        position:fixed;
+        z-index:70;
+        top:90px;
+        right:12px;
+        width:48px;
+        height:48px;
+        align-items:center;
+        justify-content:center;
+        border:1px solid rgba(255,255,255,.16);
+        border-radius:15px;
+        background:rgba(15,40,28,.86);
+        color:#fff;
+        font-size:23px;
+        backdrop-filter:blur(14px);
+        box-shadow:0 10px 30px rgba(0,0,0,.22);
+    }
+
+    #search-panel{
+        left:auto;
+        right:0;
+        top:0;
+        width:min(86vw,330px);
+        height:100dvh;
+        max-height:none;
+        border-radius:24px 0 0 24px;
+        transform:translateX(105%);
+        transition:transform .28s ease;
+        z-index:80;
+        overflow:hidden;
+    }
+
+    #search-panel.mobile-open{
+        transform:translateX(0);
+    }
+
+    #search-panel .search-head{
+        padding:22px 18px 15px;
+        padding-top:max(22px, env(safe-area-inset-top));
+    }
+
+    #search-panel .search-title{
+        font-size:16px;
+    }
+
+    #search-panel #business-list{
+        max-height:none;
+        height:calc(100dvh - 110px);
+        padding:10px;
+    }
+
+    .business-item{
+        padding:14px 12px;
+        margin-bottom:4px;
+    }
+
+    #search-backdrop{
+        position:fixed;
+        inset:0;
+        z-index:75;
+        background:rgba(0,0,0,.38);
+        backdrop-filter:blur(2px);
+    }
+
+    #search-backdrop.mobile-open{
+        display:block;
+    }
+}
+
+#mobile-hint,
+#mobile-search-toggle,
+#search-backdrop,
+#mobile-quick{
+    display:none;
+}
+
+@media(max-width:700px){
+    #mobile-hint{
+        display:block;
+        position:fixed;
+        z-index:30;
+        left:50%;
+        top:76px;
+        transform:translateX(-50%);
+        padding:8px 12px;
+        border-radius:999px;
+        background:rgba(10,28,19,.68);
+        border:1px solid rgba(255,255,255,.12);
+        color:rgba(255,255,255,.82);
+        font-size:10px;
+        white-space:nowrap;
+        backdrop-filter:blur(12px);
+        pointer-events:none;
+    }
+
+    #mobile-search-toggle{
+        display:flex;
+        position:fixed;
+        z-index:70;
+        top:116px;
+        right:12px;
+        width:48px;
+        height:48px;
+        align-items:center;
+        justify-content:center;
+        border:1px solid rgba(255,255,255,.16);
+        border-radius:15px;
+        background:rgba(15,40,28,.88);
+        color:white;
+        font-size:23px;
+        box-shadow:0 10px 30px rgba(0,0,0,.25);
+        backdrop-filter:blur(14px);
+    }
+
+    #search-panel{
+        left:auto;
+        right:0;
+        top:0;
+        width:min(86vw,330px);
+        height:100dvh;
+        max-height:none;
+        border-radius:24px 0 0 24px;
+        transform:translateX(105%);
+        transition:transform .28s ease;
+        z-index:80;
+        overflow:hidden;
+    }
+
+    #search-panel.mobile-open{
+        transform:translateX(0);
+    }
+
+    #search-panel .search-head{
+        padding:22px 18px 15px;
+        padding-top:max(22px,env(safe-area-inset-top));
+    }
+
+    #search-panel .search-title{
+        font-size:16px;
+    }
+
+    #search-panel #business-list{
+        max-height:none;
+        height:calc(100dvh - 105px);
+    }
+
+    #search-backdrop.mobile-open{
+        display:block;
+        position:fixed;
+        inset:0;
+        z-index:75;
+        background:rgba(0,0,0,.38);
+        backdrop-filter:blur(2px);
+    }
+
+    #mobile-quick{
+        display:flex;
+        position:fixed;
+        z-index:45;
+        right:12px;
+        bottom:188px;
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .quick-btn{
+        width:42px;
+        height:42px;
+        border:1px solid rgba(255,255,255,.14);
+        border-radius:14px;
+        background:rgba(15,40,28,.82);
+        color:white;
+        font-size:18px;
+        backdrop-filter:blur(12px);
+    }
+
+    .mobile-btn{
+        width:48px;
+        height:48px;
+        border-radius:15px;
+        background:rgba(15,40,28,.86);
+        box-shadow:0 8px 24px rgba(0,0,0,.2);
+        backdrop-filter:blur(10px);
+    }
+
+    .mobile-btn:active,
+    .mobile-btn.pressed,
+    .quick-btn:active,
+    #mobile-search-toggle:active{
+        transform:scale(.94);
+        background:rgba(216,208,167,.24);
+    }
+}
+
+@media(max-width:430px){
+    #mobile-hint{
+        top:72px;
+        font-size:9px;
+    }
+
+    #mobile-search-toggle{
+        top:108px;
+    }
+
+    #mobile-quick{
+        bottom:178px;
+    }
+}
+
+#mobile-controls{
+    display:none;
+
+    position:fixed;
+    z-index:50;
+
+    left:20px;
+    bottom:25px;
+
+    width:140px;
+    height:140px;
+}
+
+.mobile-btn{
+    position:absolute;
+
+    width:45px;
+    height:45px;
+
+    border-radius:12px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    background:
+        rgba(15,40,28,.8);
+
+    color:white;
+
+    cursor:pointer;
+
+    touch-action:none;
+}
+
+.mobile-up{
+    left:48px;
+    top:0;
+}
+
+.mobile-left{
+    left:0;
+    top:48px;
+}
+
+.mobile-down{
+    left:48px;
+    top:48px;
+}
+
+.mobile-right{
+    left:96px;
+    top:48px;
+}
+
+@media(max-width:700px){
+
+    #brand{
+        left:10px;
+        top:10px;
+    }
+
+    #status{
+        right:10px;
+        top:10px;
+
+        min-width:150px;
+    }
+
+    /* El buscador móvil se abre como sidebar */
+
+    #info{
+        right:10px;
+
+        width:
+            calc(100% - 20px);
+
+        top:auto;
+
+        bottom:85px;
+    }
+
+    #minimap-box{
+        right:10px;
+        bottom:85px;
+
+        width:130px;
+    }
+
+    #toolbar{
+        bottom:15px;
+    }
+
+    #mobile-controls{
+        display:block;
+    }
+}
+@media(max-width:700px){
+
+    #brand{
+        left:10px;
+        top:10px;
+    }
+
+    #status{
+        right:10px;
+        top:10px;
+        min-width:150px;
+    }
+
+    /* Panel de información más arriba para no superponerse con los controles */
+    #info{
+        right:10px;
+        width: calc(100% - 20px);
+        top: auto;
+        bottom: 145px; /* Subido para dejar libre la zona inferior */
+        max-height: 45vh;
+        overflow-y: auto;
+    }
+
+    #minimap-box{
+        right: 10px;
+        bottom: 155px; /* Subido para evitar superposición */
+        width: 120px;
+    }
+
+    #toolbar{
+        bottom: 15px;
+        z-index: 60; /* Asegurar prioridad */
+    }
+
+    /* Controles táctiles de movimiento a la izquierda y bien abajo */
+    #mobile-controls{
+        display: block;
+        left: 15px;
+        bottom: 15px;
+        width: 130px;
+        height: 130px;
+        z-index: 55;
+    }
+    
+    /* Botones rápidos de la derecha (centrar, zoom, vista) */
+    #mobile-quick{
+        bottom: 210px; /* Subidos para despejar el minimapa */
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================
+     LOADING
+========================= -->
+
+<div id="loading">
+
+    <div class="loading-box">
+
+        <div class="loading-logo">
+            laguna<span>.</span>
+        </div>
+
+        <div class="loading-sub">
+            Smart Experience Park
+        </div>
+
+        <div class="progress">
+
+            <div
+                class="progress-bar"
+                id="progress-bar"
+            ></div>
+
+        </div>
+
+        <div
+            class="loading-text"
+            id="loading-text"
+        >
+            Preparando experiencia...
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="game"></div>
+
+
+<!-- =========================
+     BRAND
+========================= -->
+
+<div
+    id="brand"
+    class="glass"
+>
+
+    <div class="brand-title">
+        laguna<span>.</span>
+    </div>
+
+    <div class="brand-sub">
+        Smart Experience Park
+    </div>
+
+</div>
+
+
+<!-- =========================
+     STATUS
+========================= -->
+
+<div
+    id="status"
+    class="glass"
+>
+
+    <div class="status-row">
+
+        <span class="status-label">
+            Zona
+        </span>
+
+        <span
+            class="status-value"
+            id="zone"
+        >
+            Laguna Central
+        </span>
+
+    </div>
+
+    <div class="status-row">
+
+        <span class="status-label">
+            Ubicación
+        </span>
+
+        <span
+            class="status-value"
+            id="location"
+        >
+            Entrada
+        </span>
+
+    </div>
+
+    <div class="status-row">
+
+        <span class="status-label">
+            Estado
+        </span>
+
+        <span class="status-value">
+            ● Operativo
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     SEARCH
+========================= -->
+
+<div
+    id="search-panel"
+    class="glass"
+>
+
+    <div class="search-head">
+
+        <div class="search-title">
+            Explorar Laguna
+        </div>
+
+        <input
+            id="search"
+            type="text"
+            placeholder="Buscar lugar..."
+        >
+
+    </div>
+
+    <div id="business-list"></div>
+
+</div>
+
+
+<!-- =========================
+     INFO
+========================= -->
+
+<div
+    id="info"
+    class="glass"
+>
+
+    <button
+        class="info-close"
+        onclick="closeInfo()"
+    >
+        ×
+    </button>
+
+    <div
+        class="info-category"
+        id="info-category"
+    >
+        EXPERIENCIA
+    </div>
+
+    <div id="info-title">
+        Laguna Experience
+    </div>
+
+    <div id="info-description">
+        Seleccioná un lugar del parque
+        para conocerlo.
+    </div>
+
+    <div class="info-status">
+        ● Disponible
+    </div>
+
+    <div class="info-buttons">
+
+        <button
+            class="btn btn-primary"
+            id="route-button"
+        >
+            IR HASTA AQUÍ
+        </button>
+
+        <button
+            class="btn btn-secondary"
+            onclick="closeInfo()"
+        >
+            CERRAR
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     TOOLBAR
+========================= -->
+
+<div
+    id="toolbar"
+    class="glass"
+>
+
+    <button
+        class="tool"
+        onclick="toggleTopView()"
+        title="Vista aérea"
+    >
+        ⬆
+    </button>
+
+    <button
+        class="tool"
+        onclick="resetCamera()"
+        title="Reset cámara"
+    >
+        ◉
+    </button>
+
+    <button
+        class="tool"
+        onclick="centerPlayer()"
+        title="Ubicarme"
+    >
+        ◎
+    </button>
+
+    <button
+        class="tool"
+        onclick="cancelRoute()"
+        title="Cancelar ruta"
+    >
+        ×
+    </button>
+
+</div>
+
+
+<!-- =========================
+     MINIMAP
+========================= -->
+
+<div
+    id="minimap-box"
+    class="glass"
+>
+
+    <canvas
+        id="minimap"
+        width="300"
+        height="220"
+    ></canvas>
+
+</div>
+
+
+<div id="toast"></div>
+
+
+<!-- =========================
+     MOBILE
+========================= -->
+
+<div id="mobile-hint">Arrastrá para mirar · mantené presionada una flecha para caminar</div>
+
+<button id="mobile-search-toggle" class="mobile-menu-btn" aria-label="Abrir buscador">⌕</button>
+<div id="search-backdrop"></div>
+
+<div id="mobile-quick">
+    <button class="quick-btn" id="mobile-center" title="Centrar ubicación">◎</button>
+    <button class="quick-btn" id="mobile-view" title="Cambiar vista">◈</button>
+    <button class="quick-btn" id="mobile-zoom-in" title="Acercar">＋</button>
+    <button class="quick-btn" id="mobile-zoom-out" title="Alejar">−</button>
+</div>
+
+<div id="mobile-controls">
+
+    <button
+        class="mobile-btn mobile-up"
+        data-key="w"
+    >
+        ▲
+    </button>
+
+    <button
+        class="mobile-btn mobile-left"
+        data-key="a"
+    >
+        ◀
+    </button>
+
+    <button
+        class="mobile-btn mobile-down"
+        data-key="s"
+    >
+        ▼
+    </button>
+
+    <button
+        class="mobile-btn mobile-right"
+        data-key="d"
+    >
+        ▶
+    </button>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let scene;
+let camera;
+let renderer;
+let clock;
+
+let player;
+let playerGroup;
+
+let buildings = [];
+let buildingMeshes = [];
+let obstacles = [];
+let npcs = [];
+
+let selectedBusiness = null;
+let selectedBuilding = null;
+
+let hoveredBuilding = null;
+
+let routeLine = null;
+let routePoints = [];
+let routeIndex = 0;
+let routeMoving = false;
+
+let keys = {};
+
+let topView = false;
+
+let cameraDistance = 22;
+let cameraAngle = 0.7;
+let cameraHeight = 10;
+
+let targetCameraPosition =
+    new THREE.Vector3();
+
+let cameraTarget =
+    new THREE.Vector3();
+
+let mouseDown = false;
+let mouseMoved = false;
+
+let lastMouseX = 0;
+let lastMouseY = 0;
+
+let waterTime = 0;
+
+let water = null;
+
+let toastTimer = null;
+
+const raycaster =
+    new THREE.Raycaster();
+
+const mouse =
+    new THREE.Vector2();
+
+
+/* =========================================================
+   DATOS
+========================================================= */
+
+const businessData = [
+
+    {
+        id:1,
+        name:"Cabañas",
+        label:"CABAÑAS",
+        category:"Alojamiento",
+
+        x:-68,
+        z:-48,
+
+        color:0x9b7653,
+
+        description:
+            "Cabañas rodeadas de naturaleza para disfrutar una estadía tranquila junto a la laguna.",
+
+        routeX:-68,
+        routeZ:-37
+    },
+
+    {
+        id:2,
+        name:"Glamping",
+        label:"GLAMPING",
+        category:"Alojamiento",
+
+        x:-43,
+        z:-48,
+
+        color:0x866e52,
+
+        description:
+            "Una experiencia de alojamiento diferente combinando naturaleza, comodidad y diseño.",
+
+        routeX:-43,
+        routeZ:-37
+    },
+
+    {
+        id:3,
+        name:"Spa & Wellness",
+        label:"SPA",
+        category:"Bienestar",
+
+        x:43,
+        z:-48,
+
+        color:0x718b7c,
+
+        description:
+            "Espacio dedicado al descanso, masajes, relajación y bienestar.",
+
+        routeX:43,
+        routeZ:-37
+    },
+
+    {
+        id:4,
+        name:"Beach Club",
+        label:"BEACH CLUB",
+        category:"Entretenimiento",
+
+        x:68,
+        z:-48,
+
+        color:0xd8ad68,
+
+        description:
+            "Sector de playa, descanso y actividades para disfrutar junto al agua.",
+
+        routeX:68,
+        routeZ:-37
+    },
+
+    {
+        id:5,
+        name:"Restaurante",
+        label:"RESTAURANTE",
+        category:"Gastronomía",
+
+        x:-68,
+        z:48,
+
+        color:0x9c674d,
+
+        description:
+            "Restaurante principal con gastronomía y espacios para compartir.",
+
+        routeX:-68,
+        routeZ:37
+    },
+
+    {
+        id:6,
+        name:"Mundo Cookie",
+        label:"MUNDO COOKIE",
+        category:"Gastronomía",
+
+        x:-43,
+        z:48,
+
+        color:0xc88c68,
+
+        description:
+            "Un espacio temático pensado para disfrutar productos dulces y experiencias familiares.",
+
+        routeX:-43,
+        routeZ:37
+    },
+
+    {
+        id:7,
+        name:"Emprendedores",
+        label:"EMPRENDEDORES",
+        category:"Comercial",
+
+        x:43,
+        z:48,
+
+        color:0x78906d,
+
+        description:
+            "Paseo de emprendimientos y productos locales.",
+
+        routeX:43,
+        routeZ:37
+    },
+
+    {
+        id:8,
+        name:"Actividades Acuáticas",
+        label:"ACTIVIDADES",
+        category:"Náutica",
+
+        x:68,
+        z:48,
+
+        color:0x547d89,
+
+        description:
+            "Actividades recreativas sobre la laguna, incluyendo kayaks y propuestas acuáticas.",
+
+        routeX:68,
+        routeZ:37
+    },
+
+    {
+        id:9,
+        name:"Parque Aventura",
+        label:"AVENTURA",
+        category:"Entretenimiento",
+
+        x:-72,
+        z:5,
+
+        color:0x69774d,
+
+        description:
+            "Circuitos de aventura y actividades al aire libre.",
+
+        routeX:-60,
+        routeZ:5
+    },
+
+    {
+        id:10,
+        name:"Sector Infantil",
+        label:"INFANTIL",
+        category:"Familias",
+
+        x:-72,
+        z:-10,
+
+        color:0xc2925b,
+
+        description:
+            "Espacio diseñado para que los más chicos puedan jugar y divertirse.",
+
+        routeX:-60,
+        routeZ:-10
+    },
+
+    {
+        id:11,
+        name:"Eventos",
+        label:"EVENTOS",
+        category:"Eventos",
+
+        x:72,
+        z:5,
+
+        color:0x725b7e,
+
+        description:
+            "Espacio para eventos, encuentros, celebraciones y actividades especiales.",
+
+        routeX:60,
+        routeZ:5
+    },
+
+    {
+        id:12,
+        name:"Experiencias",
+        label:"EXPERIENCIAS",
+        category:"Actividades",
+
+        x:72,
+        z:-10,
+
+        color:0x617c76,
+
+        description:
+            "Punto de partida para diferentes experiencias y actividades dentro del parque.",
+
+        routeX:60,
+        routeZ:-10
+    }
+
+];
+
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        startLoading();
+
+        try{
+
+            init();
+
+            if(
+                renderer &&
+                scene &&
+                camera &&
+                clock
+            ){
+
+                animate();
+
+            }
+
+        }catch(error){
+
+            console.error(
+                "Error iniciando Laguna Experience:",
+                error
+            );
+
+            document.getElementById(
+                "loading-text"
+            ).textContent =
+                "Error al iniciar la experiencia.";
+
+            document.getElementById(
+                "progress-bar"
+            ).style.background =
+                "#d66";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+function startLoading(){
+
+    let progress = 0;
+
+    const interval =
+        setInterval(
+            function(){
+
+                progress +=
+                    Math.random() * 18;
+
+                if(progress >= 100){
+
+                    progress = 100;
+
+                    clearInterval(
+                        interval
+                    );
+
+                    document.getElementById(
+                        "loading-text"
+                    ).textContent =
+                        "Experiencia lista";
+
+                    setTimeout(
+                        function(){
+
+                            const loading =
+                                document.getElementById(
+                                    "loading"
+                                );
+
+                            loading.style.opacity =
+                                "0";
+
+                            setTimeout(
+                                function(){
+
+                                    loading.style.display =
+                                        "none";
+
+                                },
+                                600
+                            );
+
+                        },
+                        400
+                    );
+
+                }
+
+
+                document.getElementById(
+                    "progress-bar"
+                ).style.width =
+                    progress + "%";
+
+
+                if(progress < 30){
+
+                    document.getElementById(
+                        "loading-text"
+                    ).textContent =
+                        "Preparando el parque...";
+
+                }
+                else if(progress < 60){
+
+                    document.getElementById(
+                        "loading-text"
+                    ).textContent =
+                        "Construyendo espacios...";
+
+                }
+                else if(progress < 90){
+
+                    document.getElementById(
+                        "loading-text"
+                    ).textContent =
+                        "Preparando experiencias...";
+
+                }
+
+            },
+            120
+        );
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+function init(){
+
+    if(
+        typeof THREE ===
+        "undefined"
+    ){
+
+        throw new Error(
+            "Three.js no pudo cargarse."
+        );
+
+    }
+
+
+    scene =
+        new THREE.Scene();
+
+
+    scene.background =
+        new THREE.Color(
+            0x9eb8a1
+        );
+
+
+    scene.fog =
+        new THREE.Fog(
+            0x9eb8a1,
+            130,
+            260
+        );
+
+
+    clock =
+        new THREE.Clock();
+
+
+    camera =
+        new THREE.PerspectiveCamera(
+            55,
+            window.innerWidth /
+            window.innerHeight,
+            .1,
+            500
+        );
+
+
+    camera.position.set(
+        0,
+        12,
+        22
+    );
+
+
+    renderer =
+        new THREE.WebGLRenderer({
+            antialias:true,
+            powerPreference:
+                "high-performance"
+        });
+
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+
+    renderer.setPixelRatio(
+        Math.min(
+            window.devicePixelRatio,
+            2
+        )
+    );
+
+
+    renderer.shadowMap.enabled =
+        true;
+
+
+    renderer.shadowMap.type =
+        THREE.PCFSoftShadowMap;
+
+
+    renderer.outputColorSpace =
+        THREE.SRGBColorSpace;
+
+
+    renderer.toneMapping =
+        THREE.ACESFilmicToneMapping;
+
+
+    renderer.toneMappingExposure =
+        1.15;
+
+
+    document
+        .getElementById("game")
+        .appendChild(
+            renderer.domElement
+        );
+
+
+    createLights();
+
+    createGround();
+
+    createLake();
+
+    createRoads();
+
+    createBuildings();
+
+    createEnvironment();
+
+    createPlayer();
+
+    createNPCs();
+
+    createBusinessList();
+
+    setupEvents();
+
+
+    window.addEventListener(
+        "resize",
+        onResize
+    );
+
+}
+
+
+/* =========================================================
+   LUCES
+========================================================= */
+
+function createLights(){
+
+    const hemisphere =
+        new THREE.HemisphereLight(
+            0xddebdc,
+            0x36543e,
+            2
+        );
+
+    scene.add(
+        hemisphere
+    );
+
+
+    const sun =
+        new THREE.DirectionalLight(
+            0xfff4d8,
+            3
+        );
+
+
+    sun.position.set(
+        -60,
+        100,
+        -50
+    );
+
+
+    sun.castShadow =
+        true;
+
+
+    sun.shadow.mapSize.width =
+        2048;
+
+    sun.shadow.mapSize.height =
+        2048;
+
+
+    sun.shadow.camera.left =
+        -130;
+
+    sun.shadow.camera.right =
+        130;
+
+    sun.shadow.camera.top =
+        130;
+
+    sun.shadow.camera.bottom =
+        -130;
+
+
+    sun.shadow.camera.near =
+        1;
+
+    sun.shadow.camera.far =
+        300;
+
+
+    scene.add(
+        sun
+    );
+
+}
+
+
+/* =========================================================
+   GROUND
+========================================================= */
+
+function createGround(){
+
+    const geometry =
+        new THREE.PlaneGeometry(
+            210,
+            170
+        );
+
+
+    const material =
+        new THREE.MeshStandardMaterial({
+            color:0x557b4e,
+            roughness:1
+        });
+
+
+    const ground =
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+
+    ground.rotation.x =
+        -Math.PI / 2;
+
+
+    ground.receiveShadow =
+        true;
+
+
+    scene.add(
+        ground
+    );
+
+
+    const borderMaterial =
+        new THREE.MeshStandardMaterial({
+            color:0x355a3b,
+            roughness:1
+        });
+
+
+    const border =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                214,
+                1,
+                174
+            ),
+            borderMaterial
+        );
+
+
+    border.position.y =
+        -.8;
+
+
+    scene.add(
+        border
+    );
+
+}
+
+
+/* =========================================================
+   LAGO
+========================================================= */
+
+function createLake(){
+
+    const beach =
+        new THREE.Mesh(
+            new THREE.CircleGeometry(
+                36,
+                80
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0xd8c596,
+                roughness:1
+            })
+        );
+
+
+    beach.rotation.x =
+        -Math.PI / 2;
+
+
+    beach.scale.set(
+        1.35,
+        .68,
+        1
+    );
+
+
+    beach.position.y =
+        .02;
+
+
+    scene.add(
+        beach
+    );
+
+
+    const geometry =
+        new THREE.CircleGeometry(
+            32,
+            80
+        );
+
+
+    const material =
+        new THREE.MeshStandardMaterial({
+            color:0x4e9a9d,
+            roughness:.2,
+            metalness:.05,
+            transparent:true,
+            opacity:.9
+        });
+
+
+    water =
+        new THREE.Mesh(
+            geometry,
+            material
+        );
+
+
+    water.rotation.x =
+        -Math.PI / 2;
+
+
+    water.scale.set(
+        1.35,
+        .68,
+        1
+    );
+
+
+    water.position.y =
+        .13;
+
+
+    scene.add(
+        water
+    );
+
+    /* REFLEJOS / ONDAS SUAVES PARA DIFERENCIAR EL AGUA */
+    for(let i=0;i<3;i++){
+        const ripple = new THREE.Mesh(
+            new THREE.TorusGeometry(8 + i*6, .08, 8, 64),
+            new THREE.MeshBasicMaterial({
+                color:0xb8e4df,
+                transparent:true,
+                opacity:.22
+            })
+        );
+        ripple.rotation.x = Math.PI / 2;
+        ripple.scale.set(1.35,.68,1);
+        ripple.position.y = .19 + i*.015;
+        scene.add(ripple);
+    }
+
+    obstacles.push({
+        type:"lake"
+    });
+
+}
+
+
+/* =========================================================
+   ROADS
+========================================================= */
+
+function createRoads(){
+
+    const roadMaterial =
+        new THREE.MeshStandardMaterial({
+            color:0x77766d,
+            roughness:1
+        });
+
+
+    const sideMaterial =
+        new THREE.MeshStandardMaterial({
+            color:0x9a987f,
+            roughness:1
+        });
+
+
+    function road(
+        x,
+        z,
+        w,
+        d
+    ){
+
+        const side =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    w + 1.5,
+                    .12,
+                    d + 1.5
+                ),
+                sideMaterial
+            );
+
+
+        side.position.set(
+            x,
+            .07,
+            z
+        );
+
+
+        side.receiveShadow =
+            true;
+
+
+        scene.add(
+            side
+        );
+
+
+        const r =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    w,
+                    .15,
+                    d
+                ),
+                roadMaterial
+            );
+
+
+        r.position.set(
+            x,
+            .13,
+            z
+        );
+
+
+        r.receiveShadow =
+            true;
+
+
+        scene.add(
+            r
+        );
+
+    }
+
+
+    /* CAMINOS ALREDEDOR DE LA LAGUNA — EL AGUA QUEDA LIBRE */
+
+    road(
+        -68,
+        0,
+        54,
+        7
+    );
+
+    road(
+        68,
+        0,
+        54,
+        7
+    );
+
+    road(
+        0,
+        -51,
+        7,
+        42
+    );
+
+    road(
+        0,
+        51,
+        7,
+        42
+    );
+
+
+    road(
+        -58,
+        0,
+        6,
+        145
+    );
+
+
+    road(
+        58,
+        0,
+        6,
+        145
+    );
+
+
+    road(
+        0,
+        -40,
+        190,
+        6
+    );
+
+
+    road(
+        0,
+        40,
+        190,
+        6
+    );
+
+}
+
+
+/* =========================================================
+   BUILDINGS
+========================================================= */
+
+function createBuildings(){
+
+    businessData.forEach(
+        function(data){
+
+            const group =
+                createBuilding(
+                    data
+                );
+
+
+            buildings.push(
+                group
+            );
+
+
+            scene.add(
+                group
+            );
+
+
+            buildingMeshes.push(
+                group.userData.clickMesh
+            );
+
+
+            obstacles.push({
+                type:"building",
+
+                x:data.x,
+                z:data.z,
+
+                w:10,
+                d:9
+            });
+
+        }
+    );
+
+}
+
+
+function createBuilding(data){
+
+    const group =
+        new THREE.Group();
+
+
+    group.position.set(
+        data.x,
+        0,
+        data.z
+    );
+
+
+    group.userData.business =
+        data;
+
+
+    /* CUERPO */
+
+    const body =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                10,
+                5,
+                8
+            ),
+            new THREE.MeshStandardMaterial({
+                color:data.color,
+                roughness:.8
+            })
+        );
+
+
+    body.position.y =
+        2.5;
+
+
+    body.castShadow =
+        true;
+
+
+    body.receiveShadow =
+        true;
+
+
+    group.add(
+        body
+    );
+
+
+    group.userData.clickMesh =
+        body;
+
+
+    body.userData.building =
+        group;
+
+
+    /* TECHO */
+
+    const roof =
+        new THREE.Mesh(
+            new THREE.ConeGeometry(
+                7.5,
+                3.5,
+                4
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0x443f38,
+                roughness:.85
+            })
+        );
+
+
+    roof.rotation.y =
+        Math.PI / 4;
+
+
+    roof.position.y =
+        6.6;
+
+
+    roof.castShadow =
+        true;
+
+
+    group.add(
+        roof
+    );
+
+
+    /* VENTANAS */
+
+    for(
+        let side of [-1,1]
+    ){
+
+        for(
+            let i=-1;
+            i<=1;
+            i++
+        ){
+
+            const windowMesh =
+                new THREE.Mesh(
+                    new THREE.BoxGeometry(
+                        1.4,
+                        1.5,
+                        .12
+                    ),
+                    new THREE.MeshStandardMaterial({
+                        color:0xb8d4cc,
+                        emissive:0x27453c,
+                        emissiveIntensity:.3
+                    })
+                );
+
+
+            windowMesh.position.set(
+                i * 2.5,
+                2.9,
+                side * 4.05
+            );
+
+
+            group.add(
+                windowMesh
+            );
+
+        }
+
+    }
+
+
+    /* PUERTA */
+
+    const door =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                1.5,
+                2.6,
+                .15
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0x3b2a20
+            })
+        );
+
+
+    door.position.set(
+        0,
+        1.3,
+        4.05
+    );
+
+
+    group.add(
+        door
+    );
+
+
+    /* CARTEL */
+
+    const sign =
+        createSign(
+            data.label
+        );
+
+
+    sign.position.set(
+        0,
+        7.8,
+        4.2
+    );
+
+
+    group.add(
+        sign
+    );
+
+
+    /* LUZ */
+
+    const lamp =
+        new THREE.PointLight(
+            0xffdca1,
+            .8,
+            14
+        );
+
+
+    lamp.position.set(
+        0,
+        4,
+        5
+    );
+
+
+    group.add(
+        lamp
+    );
+
+
+    return group;
+
+}
+
+
+/* =========================================================
+   SIGN
+========================================================= */
+
+function createSign(text){
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    canvas.width =
+        512;
+
+    canvas.height =
+        128;
+
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    ctx.fillStyle =
+        "#173f2c";
+
+
+    ctx.fillRect(
+        10,
+        10,
+        492,
+        108
+    );
+
+
+    ctx.fillStyle =
+        "#f4efdf";
+
+
+    ctx.font =
+        text.length > 13
+        ? "bold 27px Arial"
+        : "bold 34px Arial";
+
+
+    ctx.textAlign =
+        "center";
+
+
+    ctx.textBaseline =
+        "middle";
+
+
+    ctx.fillText(
+        text,
+        256,
+        64
+    );
+
+
+    const texture =
+        new THREE.CanvasTexture(
+            canvas
+        );
+
+
+    texture.colorSpace =
+        THREE.SRGBColorSpace;
+
+
+    const material =
+        new THREE.MeshBasicMaterial({
+            map:texture,
+            transparent:true
+        });
+
+
+    return new THREE.Mesh(
+        new THREE.PlaneGeometry(
+            5,
+            1.25
+        ),
+        material
+    );
+
+}
+
+
+/* =========================================================
+   ENVIRONMENT
+========================================================= */
+
+function createEnvironment(){
+
+    for(
+        let i=0;
+        i<100;
+        i++
+    ){
+
+        const x =
+            -95 +
+            Math.random()*190;
+
+
+        const z =
+            -75 +
+            Math.random()*150;
+
+
+        const lakeCheck =
+            ((x/43)*(x/43)) +
+            ((z/22)*(z/22));
+
+
+        if(lakeCheck < 1.5){
+
+            continue;
+
+        }
+
+
+        if(
+            Math.abs(x)<20 &&
+            Math.abs(z)<20
+        ){
+
+            continue;
+
+        }
+
+
+        createTree(
+            x,
+            z,
+            .8 +
+            Math.random()*.7
+        );
+
+    }
+
+
+    createBench(
+        -25,
+        -27
+    );
+
+
+    createBench(
+        25,
+        -27
+    );
+
+
+    createBench(
+        -25,
+        27
+    );
+
+
+    createBench(
+        25,
+        27
+    );
+
+}
+
+
+/* =========================================================
+   TREE
+========================================================= */
+
+function createTree(
+    x,
+    z,
+    scale
+){
+
+    const tree =
+        new THREE.Group();
+
+
+    tree.position.set(
+        x,
+        0,
+        z
+    );
+
+
+    tree.scale.setScalar(
+        scale
+    );
+
+
+    const trunk =
+        new THREE.Mesh(
+            new THREE.CylinderGeometry(
+                .45,
+                .6,
+                3.5,
+                8
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0x634832
+            })
+        );
+
+
+    trunk.position.y =
+        1.75;
+
+
+    trunk.castShadow =
+        true;
+
+
+    tree.add(
+        trunk
+    );
+
+
+    for(
+        let i=0;
+        i<3;
+        i++
+    ){
+
+        const crown =
+            new THREE.Mesh(
+                new THREE.IcosahedronGeometry(
+                    2.5,
+                    1
+                ),
+                new THREE.MeshStandardMaterial({
+                    color:
+                        i===0
+                        ? 0x42683f
+                        : 0x527b48,
+                    roughness:1
+                })
+            );
+
+
+        crown.position.set(
+            (Math.random()-.5)*1.3,
+            4+i*1.3,
+            (Math.random()-.5)*1.3
+        );
+
+
+        crown.castShadow =
+            true;
+
+
+        tree.add(
+            crown
+        );
+
+    }
+
+
+    scene.add(
+        tree
+    );
+
+}
+
+
+/* =========================================================
+   BENCH
+========================================================= */
+
+function createBench(
+    x,
+    z
+){
+
+    const group =
+        new THREE.Group();
+
+
+    group.position.set(
+        x,
+        0,
+        z
+    );
+
+
+    const wood =
+        new THREE.MeshStandardMaterial({
+            color:0x6c4a2f
+        });
+
+
+    const seat =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                3,
+                .25,
+                .8
+            ),
+            wood
+        );
+
+
+    seat.position.y =
+        1.1;
+
+
+    group.add(
+        seat
+    );
+
+
+    const back =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                3,
+                1.1,
+                .2
+            ),
+            wood
+        );
+
+
+    back.position.set(
+        0,
+        1.55,
+        -.3
+    );
+
+
+    group.add(
+        back
+    );
+
+
+    scene.add(
+        group
+    );
+
+}
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+function createPlayer(){
+
+    playerGroup =
+        new THREE.Group();
+
+
+    playerGroup.position.set(
+        0,
+        0,
+        -65
+    );
+
+
+    /* CUERPO */
+
+    const body =
+        new THREE.Mesh(
+            new THREE.CylinderGeometry(
+                .55,
+                .7,
+                1.5,
+                12
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0xd8d0a7,
+                roughness:.8
+            })
+        );
+
+
+    body.position.y =
+        1.2;
+
+
+    body.castShadow =
+        true;
+
+
+    playerGroup.add(
+        body
+    );
+
+
+    /* CABEZA */
+
+    const head =
+        new THREE.Mesh(
+            new THREE.SphereGeometry(
+                .5,
+                16,
+                16
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0xc58c67,
+                roughness:.8
+            })
+        );
+
+
+    head.position.y =
+        2.4;
+
+
+    head.castShadow =
+        true;
+
+
+    playerGroup.add(
+        head
+    );
+
+    /* CARITA */
+    const faceMaterial = new THREE.MeshStandardMaterial({
+        color:0x241b17,
+        roughness:.7
+    });
+
+    const eyeLeft = new THREE.Mesh(
+        new THREE.SphereGeometry(.075,10,10),
+        faceMaterial
+    );
+    eyeLeft.position.set(-.17,2.48,.44);
+    playerGroup.add(eyeLeft);
+
+    const eyeRight = eyeLeft.clone();
+    eyeRight.position.x = .17;
+    playerGroup.add(eyeRight);
+
+    const nose = new THREE.Mesh(
+        new THREE.SphereGeometry(.045,8,8),
+        new THREE.MeshStandardMaterial({color:0xb9785b,roughness:.8})
+    );
+    nose.position.set(0,2.34,.48);
+    playerGroup.add(nose);
+
+    const mouth = new THREE.Mesh(
+        new THREE.TorusGeometry(.12,.025,6,16,Math.PI),
+        faceMaterial
+    );
+    mouth.rotation.x = Math.PI / 2;
+    mouth.rotation.z = Math.PI;
+    mouth.position.set(0,2.22,.47);
+    playerGroup.add(mouth);
+
+    /* MARCADOR */
+
+    const marker =
+        new THREE.Mesh(
+            new THREE.ConeGeometry(
+                .25,
+                .6,
+                8
+            ),
+            new THREE.MeshBasicMaterial({
+                color:0xffe18b
+            })
+        );
+
+
+    marker.position.y =
+        3.3;
+
+
+    marker.rotation.x =
+        Math.PI;
+
+
+    playerGroup.add(
+        marker
+    );
+
+
+    scene.add(
+        playerGroup
+    );
+
+
+    player =
+        playerGroup;
+
+}
+
+
+/* =========================================================
+   NPC
+========================================================= */
+
+function createNPCs(){
+
+    for(
+        let i=0;
+        i<18;
+        i++
+    ){
+
+        const npc =
+            createNPC();
+
+
+        npc.position.set(
+            -80 +
+            Math.random()*160,
+
+            0,
+
+            -60 +
+            Math.random()*120
+        );
+
+
+        npc.userData.direction =
+            Math.random() *
+            Math.PI * 2;
+
+
+        npc.userData.speed =
+            .8 +
+            Math.random()*.7;
+
+
+        scene.add(
+            npc
+        );
+
+
+        npcs.push(
+            npc
+        );
+
+    }
+
+}
+
+
+function createNPC(){
+
+    const group =
+        new THREE.Group();
+
+
+    const colors = [
+        0xd2a67b,
+        0x8eaf9a,
+        0xc7a7b9,
+        0xb0a47c,
+        0x7894a8
+    ];
+
+
+    const body =
+        new THREE.Mesh(
+            new THREE.CylinderGeometry(
+                .4,
+                .5,
+                1.5,
+                10
+            ),
+            new THREE.MeshStandardMaterial({
+                color:
+                    colors[
+                        Math.floor(
+                            Math.random() *
+                            colors.length
+                        )
+                    ],
+                roughness:.9
+            })
+        );
+
+
+    body.position.y =
+        .9;
+
+
+    body.castShadow =
+        true;
+
+
+    group.add(
+        body
+    );
+
+
+    const head =
+        new THREE.Mesh(
+            new THREE.SphereGeometry(
+                .38,
+                12,
+                12
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0xc58c67,
+                roughness:.9
+            })
+        );
+
+
+    head.position.y =
+        1.8;
+
+
+    head.castShadow =
+        true;
+
+
+    group.add(
+        head
+    );
+
+
+    return group;
+
+}
+
+
+/* =========================================================
+   MOVIMIENTO
+========================================================= */
+
+function updatePlayer(delta){
+
+    if(
+        routeMoving
+    ){
+
+        updateRoute(
+            delta
+        );
+
+        return;
+
+    }
+
+
+    let dx = 0;
+    let dz = 0;
+
+
+    if(
+        keys["w"] ||
+        keys["arrowup"]
+    ){
+
+        dz -= 1;
+
+    }
+
+
+    if(
+        keys["s"] ||
+        keys["arrowdown"]
+    ){
+
+        dz += 1;
+
+    }
+
+
+    if(
+        keys["a"] ||
+        keys["arrowleft"]
+    ){
+
+        dx -= 1;
+
+    }
+
+
+    if(
+        keys["d"] ||
+        keys["arrowright"]
+    ){
+
+        dx += 1;
+
+    }
+
+
+    if(
+        dx===0 &&
+        dz===0
+    ){
+
+        return;
+
+    }
+
+
+    const length =
+        Math.sqrt(
+            dx*dx +
+            dz*dz
+        );
+
+
+    dx /= length;
+    dz /= length;
+
+
+    const speed =
+        10 * delta;
+
+
+    movePlayer(
+        dx*speed,
+        dz*speed
+    );
+
+
+    player.rotation.y =
+        Math.atan2(
+            dx,
+            dz
+        );
+
+
+    updateLocation();
+
+}
+
+
+function movePlayer(
+    dx,
+    dz
+){
+
+    const newX =
+        player.position.x +
+        dx;
+
+
+    const newZ =
+        player.position.z +
+        dz;
+
+
+    if(
+        !isBlocked(
+            newX,
+            player.position.z
+        )
+    ){
+
+        player.position.x =
+            newX;
+
+    }
+
+
+    if(
+        !isBlocked(
+            player.position.x,
+            newZ
+        )
+    ){
+
+        player.position.z =
+            newZ;
+
+    }
+
+}
+
+
+/* =========================================================
+   COLISIONES
+========================================================= */
+
+function isBlocked(
+    x,
+    z
+){
+
+    if(
+        x < -98 ||
+        x > 98 ||
+        z < -78 ||
+        z > 78
+    ){
+
+        return true;
+
+    }
+
+
+    /* LAGUNA */
+
+    const lake =
+        ((x/43)*(x/43)) +
+        ((z/22)*(z/22));
+
+
+    if(
+        lake < .78
+    ){
+
+        return true;
+
+    }
+
+
+    /* EDIFICIOS */
+
+    for(
+        const obstacle
+        of obstacles
+    ){
+
+        if(
+            obstacle.type !==
+            "building"
+        ){
+
+            continue;
+
+        }
+
+
+        if(
+            Math.abs(
+                x -
+                obstacle.x
+            )
+            <
+            obstacle.w/2 + 1.3
+
+            &&
+
+            Math.abs(
+                z -
+                obstacle.z
+            )
+            <
+            obstacle.d/2 + 1.3
+        ){
+
+            return true;
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   NPC MOVEMENT
+========================================================= */
+
+function updateNPCs(
+    delta
+){
+
+    npcs.forEach(
+        function(npc){
+
+            const dir =
+                npc.userData.direction;
+
+
+            const speed =
+                npc.userData.speed;
+
+
+            const nx =
+                npc.position.x +
+                Math.cos(dir) *
+                speed *
+                delta;
+
+
+            const nz =
+                npc.position.z +
+                Math.sin(dir) *
+                speed *
+                delta;
+
+
+            if(
+                !isBlocked(
+                    nx,
+                    nz
+                )
+            ){
+
+                npc.position.x =
+                    nx;
+
+                npc.position.z =
+                    nz;
+
+            }
+            else{
+
+                npc.userData.direction +=
+                    Math.PI *
+                    (.5 +
+                    Math.random());
+
+            }
+
+
+            npc.rotation.y =
+                -dir;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   BUSINESS LIST
+========================================================= */
+
+function createBusinessList(){
+
+    const container =
+        document.getElementById(
+            "business-list"
+        );
+
+
+    businessData.forEach(
+        function(data){
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "business-item";
+
+
+            item.dataset.name =
+                data.name.toLowerCase();
+
+
+            item.dataset.id =
+                data.id;
+
+
+            item.innerHTML = `
+
+                <div class="business-name">
+                    ${data.name}
+                </div>
+
+                <div class="business-category">
+                    ${data.category}
+                </div>
+
+            `;
+
+
+            item.addEventListener(
+                "click",
+                function(){
+
+                    selectBusiness(
+                        data
+                    );
+
+                }
+            );
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SELECT BUSINESS
+========================================================= */
+
+function selectBusiness(
+    data
+){
+
+    selectedBusiness =
+        data;
+
+
+    selectedBuilding =
+        buildings.find(
+            function(building){
+
+                return (
+                    building
+                        .userData
+                        .business
+                        .id
+                    ===
+                    data.id
+                );
+
+            }
+        );
+
+
+    highlightBuilding(
+        selectedBuilding
+    );
+
+
+    document.getElementById(
+        "info-category"
+    ).textContent =
+        data.category;
+
+
+    document.getElementById(
+        "info-title"
+    ).textContent =
+        data.name;
+
+
+    document.getElementById(
+        "info-description"
+    ).textContent =
+        data.description;
+
+
+    document.getElementById(
+        "info"
+    ).classList.add(
+        "open"
+    );
+
+
+    document.getElementById(
+        "route-button"
+    ).onclick =
+        function(){
+
+            startRoute(
+                data
+            );
+
+        };
+
+
+    document
+        .querySelectorAll(
+            ".business-item"
+        )
+        .forEach(
+            function(item){
+
+                item.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const active =
+        document.querySelector(
+            '.business-item[data-id="' +
+            data.id +
+            '"]'
+        );
+
+
+    if(active){
+
+        active.classList.add(
+            "active"
+        );
+
+    }
+
+
+    toast(
+        data.name +
+        " seleccionado"
+    );
+
+}
+
+
+/* =========================================================
+   HIGHLIGHT
+========================================================= */
+
+function highlightBuilding(
+    building
+){
+
+    buildings.forEach(
+        function(b){
+
+            const mesh =
+                b.userData
+                    .clickMesh;
+
+
+            mesh.scale.set(
+                1,
+                1,
+                1
+            );
+
+        }
+    );
+
+
+    if(
+        building
+    ){
+
+        const mesh =
+            building.userData
+                .clickMesh;
+
+
+        mesh.scale.set(
+            1.06,
+            1.06,
+            1.06
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+function closeInfo(){
+
+    document
+        .getElementById(
+            "info"
+        )
+        .classList.remove(
+            "open"
+        );
+
+
+    selectedBusiness =
+        null;
+
+
+    selectedBuilding =
+        null;
+
+
+    highlightBuilding(
+        null
+    );
+
+}
+
+
+/* =========================================================
+   ROUTE
+========================================================= */
+
+function startRoute(
+    data
+){
+
+    cancelRoute();
+
+
+    const start =
+        new THREE.Vector3(
+            player.position.x,
+            .35,
+            player.position.z
+        );
+
+
+    const end =
+        new THREE.Vector3(
+            data.routeX,
+            .35,
+            data.routeZ
+        );
+
+
+    routePoints =
+        createRoute(
+            start,
+            end
+        );
+
+
+    if(
+        routePoints.length === 0
+    ){
+
+        toast(
+            "No se pudo encontrar una ruta."
+        );
+
+        return;
+
+    }
+
+
+    drawRoute(
+        routePoints
+    );
+
+
+    routeIndex =
+        0;
+
+
+    routeMoving =
+        true;
+
+
+    toast(
+        "Ruta hacia " +
+        data.name
+    );
+
+}
+
+
+/* =========================================================
+   ROUTE
+========================================================= */
+
+function createRoute(
+    start,
+    end
+){
+
+    const points = [];
+
+    const steps = 50;
+
+
+    for(
+        let i=0;
+        i<=steps;
+        i++
+    ){
+
+        const t =
+            i / steps;
+
+
+        const x =
+            start.x +
+            (end.x-start.x) *
+            t;
+
+
+        const z =
+            start.z +
+            (end.z-start.z) *
+            t;
+
+
+        points.push(
+            new THREE.Vector3(
+                x,
+                .5,
+                z
+            )
+        );
+
+    }
+
+
+    for(
+        const point
+        of points
+    ){
+
+        const lake =
+            ((point.x/43) *
+             (point.x/43))
+            +
+            ((point.z/22) *
+             (point.z/22));
+
+
+        if(
+            lake < .9
+        ){
+
+            return createSafeRoute(
+                start,
+                end
+            );
+
+        }
+
+
+        if(
+            isBuildingBlocked(
+                point.x,
+                point.z
+            )
+        ){
+
+            return createSafeRoute(
+                start,
+                end
+            );
+
+        }
+
+    }
+
+
+    return points;
+
+}
+
+
+function isBuildingBlocked(
+    x,
+    z
+){
+
+    for(
+        const obstacle
+        of obstacles
+    ){
+
+        if(
+            obstacle.type !==
+            "building"
+        ){
+
+            continue;
+
+        }
+
+
+        if(
+            Math.abs(
+                x-obstacle.x
+            )
+            <
+            obstacle.w/2 + .5
+
+            &&
+
+            Math.abs(
+                z-obstacle.z
+            )
+            <
+            obstacle.d/2 + .5
+        ){
+
+            return true;
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+function createSafeRoute(
+    start,
+    end
+){
+
+    const points = [];
+
+
+    let sideX =
+        start.x < 0
+        ? -52
+        : 52;
+
+
+    const bottom =
+        34;
+
+
+    const waypoints = [
+
+        new THREE.Vector3(
+            start.x,
+            .5,
+            start.z
+        ),
+
+        new THREE.Vector3(
+            sideX,
+            .5,
+            start.z
+        ),
+
+        new THREE.Vector3(
+            sideX,
+            .5,
+            bottom
+        ),
+
+        new THREE.Vector3(
+            end.x,
+            .5,
+            bottom
+        ),
+
+        new THREE.Vector3(
+            end.x,
+            .5,
+            end.z
+        )
+
+    ];
+
+
+    for(
+        let index=0;
+        index<waypoints.length;
+        index++
+    ){
+
+        const current =
+            waypoints[index];
+
+
+        if(index===0){
+
+            points.push(
+                current.clone()
+            );
+
+            continue;
+
+        }
+
+
+        const previous =
+            waypoints[
+                index-1
+            ];
+
+
+        const distance =
+            previous.distanceTo(
+                current
+            );
+
+
+        const steps =
+            Math.max(
+                2,
+                Math.ceil(
+                    distance / 2
+                )
+            );
+
+
+        for(
+            let i=1;
+            i<=steps;
+            i++
+        ){
+
+            const t =
+                i/steps;
+
+
+            const point =
+                new THREE.Vector3(
+                    previous.x +
+                    (
+                        current.x -
+                        previous.x
+                    ) * t,
+
+                    .5,
+
+                    previous.z +
+                    (
+                        current.z -
+                        previous.z
+                    ) * t
+                );
+
+
+            if(
+                !isBlocked(
+                    point.x,
+                    point.z
+                )
+            ){
+
+                points.push(
+                    point
+                );
+
+            }
+
+        }
+
+    }
+
+
+    return points;
+
+}
+
+
+/* =========================================================
+   DRAW ROUTE
+========================================================= */
+
+function drawRoute(
+    points
+){
+
+    if(
+        routeLine
+    ){
+
+        scene.remove(
+            routeLine
+        );
+
+
+        routeLine.geometry.dispose();
+
+        routeLine.material.dispose();
+
+    }
+
+
+    const geometry =
+        new THREE.BufferGeometry()
+            .setFromPoints(
+                points
+            );
+
+
+    const material =
+        new THREE.LineDashedMaterial({
+
+            color:0xffe08a,
+
+            dashSize:1.5,
+
+            gapSize:.7
+
+        });
+
+
+    routeLine =
+        new THREE.Line(
+            geometry,
+            material
+        );
+
+
+    routeLine.computeLineDistances();
+
+
+    scene.add(
+        routeLine
+    );
+
+}
+
+
+/* =========================================================
+   ROUTE MOVEMENT
+========================================================= */
+
+function updateRoute(
+    delta
+){
+
+    if(
+        routeIndex >=
+        routePoints.length
+    ){
+
+        routeMoving =
+            false;
+
+
+        toast(
+            "Llegaste a " +
+            (
+                selectedBusiness
+                ? selectedBusiness.name
+                : "destino"
+            )
+        );
+
+
+        return;
+
+    }
+
+
+    const target =
+        routePoints[
+            routeIndex
+        ];
+
+
+    const current =
+        player.position;
+
+
+    const direction =
+        new THREE.Vector3()
+            .subVectors(
+                target,
+                current
+            );
+
+
+    const distance =
+        direction.length();
+
+
+    if(
+        distance < .7
+    ){
+
+        routeIndex++;
+
+        return;
+
+    }
+
+
+    direction.normalize();
+
+
+    const speed =
+        9 * delta;
+
+
+    const nextX =
+        current.x +
+        direction.x *
+        speed;
+
+
+    const nextZ =
+        current.z +
+        direction.z *
+        speed;
+
+
+    if(
+        !isBlocked(
+            nextX,
+            nextZ
+        )
+    ){
+
+        player.position.x =
+            nextX;
+
+        player.position.z =
+            nextZ;
+
+    }
+    else{
+
+        routeMoving =
+            false;
+
+
+        toast(
+            "Ruta bloqueada"
+        );
+
+
+        return;
+
+    }
+
+
+    player.rotation.y =
+        Math.atan2(
+            direction.x,
+            direction.z
+        );
+
+
+    updateLocation();
+
+}
+
+
+/* =========================================================
+   CANCEL ROUTE
+========================================================= */
+
+function cancelRoute(){
+
+    routeMoving =
+        false;
+
+
+    routePoints =
+        [];
+
+
+    routeIndex =
+        0;
+
+
+    if(
+        routeLine
+    ){
+
+        scene.remove(
+            routeLine
+        );
+
+
+        routeLine.geometry.dispose();
+
+        routeLine.material.dispose();
+
+
+        routeLine =
+            null;
+
+    }
+
+}
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+function updateCamera(){
+
+    if(
+        !player
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        topView
+    ){
+
+        targetCameraPosition.set(
+            player.position.x,
+            90,
+            player.position.z + .01
+        );
+
+
+        cameraTarget.set(
+            player.position.x,
+            0,
+            player.position.z
+        );
+
+    }
+    else{
+
+        const x =
+            player.position.x +
+            Math.sin(
+                cameraAngle
+            ) *
+            cameraDistance;
+
+
+        const z =
+            player.position.z +
+            Math.cos(
+                cameraAngle
+            ) *
+            cameraDistance;
+
+
+        targetCameraPosition.set(
+            x,
+            cameraHeight,
+            z
+        );
+
+
+        cameraTarget.set(
+            player.position.x,
+            1.5,
+            player.position.z
+        );
+
+    }
+
+
+    camera.position.lerp(
+        targetCameraPosition,
+        .08
+    );
+
+
+    camera.lookAt(
+        cameraTarget
+    );
+
+}
+
+
+function resetCamera(){
+
+    topView =
+        false;
+
+
+    cameraAngle =
+        .7;
+
+
+    cameraDistance =
+        22;
+
+
+    cameraHeight =
+        10;
+
+
+    toast(
+        "Cámara reiniciada"
+    );
+
+}
+
+
+function centerPlayer(){
+
+    cameraTarget.copy(
+        player.position
+    );
+
+
+    toast(
+        "Ubicación centrada"
+    );
+
+}
+
+
+function toggleTopView(){
+
+    topView =
+        !topView;
+
+
+    toast(
+        topView
+        ? "Vista aérea"
+        : "Vista normal"
+    );
+
+}
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+function setupEvents(){
+
+    window.addEventListener(
+        "keydown",
+        function(event){
+
+            const key =
+                event.key.toLowerCase();
+
+
+            keys[key] =
+                true;
+
+
+            if(
+                [
+                    "w",
+                    "a",
+                    "s",
+                    "d",
+                    "arrowup",
+                    "arrowdown",
+                    "arrowleft",
+                    "arrowright"
+                ].includes(key)
+            ){
+
+                event.preventDefault();
+
+            }
+
+
+            if(
+                key === "v"
+            ){
+
+                toggleTopView();
+
+            }
+
+
+            if(
+                key === "r"
+            ){
+
+                resetCamera();
+
+            }
+
+
+            if(
+                key === "escape"
+            ){
+
+                closeInfo();
+
+                cancelRoute();
+
+            }
+
+        }
+    );
+
+
+    window.addEventListener(
+        "keyup",
+        function(event){
+
+            keys[
+                event.key.toLowerCase()
+            ] =
+                false;
+
+        }
+    );
+
+
+    renderer.domElement.addEventListener(
+        "pointerdown",
+        onPointerDown
+    );
+
+
+    renderer.domElement.addEventListener(
+        "pointermove",
+        onPointerMove
+    );
+
+
+    renderer.domElement.addEventListener(
+        "pointerup",
+        onPointerUp
+    );
+
+
+    renderer.domElement.addEventListener(
+        "pointercancel",
+        onPointerUp
+    );
+
+
+    renderer.domElement.addEventListener(
+        "wheel",
+        onWheel,
+        {
+            passive:true
+        }
+    );
+
+
+    document
+        .getElementById(
+            "search"
+        )
+        .addEventListener(
+            "input",
+            filterBusinesses
+        );
+
+
+    document
+        .querySelectorAll(
+            ".mobile-btn"
+        )
+        .forEach(
+            function(button){
+
+                const key =
+                    button.dataset.key;
+
+
+                button.addEventListener(
+                    "pointerdown",
+                    function(event){
+
+                        event.preventDefault();
+
+                        keys[key] =
+                            true;
+
+                    }
+                );
+
+
+                button.addEventListener(
+                    "pointerup",
+                    function(event){
+
+                        event.preventDefault();
+
+                        keys[key] =
+                            false;
+
+                    }
+                );
+
+
+                button.addEventListener(
+                    "pointercancel",
+                    function(){
+
+                        keys[key] =
+                            false;
+
+                    }
+                );
+
+
+                button.addEventListener(
+                    "pointerleave",
+                    function(){
+
+                        keys[key] =
+                            false;
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   POINTER
+========================================================= */
+
+function onPointerDown(
+    event
+){
+
+    mouseDown =
+        true;
+
+
+    mouseMoved =
+        false;
+
+
+    lastMouseX =
+        event.clientX;
+
+
+    lastMouseY =
+        event.clientY;
+
+}
+
+
+function onPointerMove(
+    event
+){
+
+    const dx =
+        event.clientX -
+        lastMouseX;
+
+
+    const dy =
+        event.clientY -
+        lastMouseY;
+
+
+    if(
+        mouseDown
+    ){
+
+        if(
+            Math.abs(dx)>3 ||
+            Math.abs(dy)>3
+        ){
+
+            mouseMoved =
+                true;
+
+        }
+
+
+        if(
+            !topView
+        ){
+
+            cameraAngle -=
+                dx*.005;
+
+
+            cameraHeight +=
+                dy*.04;
+
+
+            cameraHeight =
+                THREE.MathUtils.clamp(
+                    cameraHeight,
+                    5,
+                    25
+                );
+
+        }
+
+    }
+
+
+    lastMouseX =
+        event.clientX;
+
+
+    lastMouseY =
+        event.clientY;
+
+
+    updateHover(
+        event
+    );
+
+}
+
+
+function onPointerUp(
+    event
+){
+
+    if(
+        mouseDown &&
+        !mouseMoved
+    ){
+
+        clickObject(
+            event
+        );
+
+    }
+
+
+    mouseDown =
+        false;
+
+}
+
+
+function onWheel(
+    event
+){
+
+    cameraDistance +=
+        event.deltaY *
+        .015;
+
+
+    cameraDistance =
+        THREE.MathUtils.clamp(
+            cameraDistance,
+            8,
+            45
+        );
+
+}
+
+
+/* =========================================================
+   RAYCAST
+========================================================= */
+
+function updateMouse(
+    event
+){
+
+    const rect =
+        renderer.domElement
+            .getBoundingClientRect();
+
+
+    mouse.x =
+        (
+            (event.clientX -
+            rect.left) /
+            rect.width
+        ) * 2 - 1;
+
+
+    mouse.y =
+        -(
+            (event.clientY -
+            rect.top) /
+            rect.height
+        ) * 2 + 1;
+
+}
+
+
+function updateHover(
+    event
+){
+
+    updateMouse(
+        event
+    );
+
+
+    raycaster.setFromCamera(
+        mouse,
+        camera
+    );
+
+
+    const hits =
+        raycaster.intersectObjects(
+            buildingMeshes
+        );
+
+
+    if(
+        hits.length
+    ){
+
+        const building =
+            hits[0]
+                .object
+                .userData
+                .building;
+
+
+        if(
+            building !==
+            hoveredBuilding
+        ){
+
+            hoveredBuilding =
+                building;
+
+
+            renderer.domElement.style.cursor =
+                "pointer";
+
+        }
+
+    }
+    else{
+
+        hoveredBuilding =
+            null;
+
+
+        renderer.domElement.style.cursor =
+            "default";
+
+    }
+
+}
+
+
+function clickObject(
+    event
+){
+
+    updateMouse(
+        event
+    );
+
+
+    raycaster.setFromCamera(
+        mouse,
+        camera
+    );
+
+
+    const hits =
+        raycaster.intersectObjects(
+            buildingMeshes
+        );
+
+
+    if(
+        !hits.length
+    ){
+
+        return;
+
+    }
+
+
+    const building =
+        hits[0]
+            .object
+            .userData
+            .building;
+
+
+    if(
+        building
+    ){
+
+        selectBusiness(
+            building.userData.business
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function filterBusinesses(){
+
+    const value =
+        document
+            .getElementById(
+                "search"
+            )
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    document
+        .querySelectorAll(
+            ".business-item"
+        )
+        .forEach(
+            function(item){
+
+                const name =
+                    item.dataset.name;
+
+
+                item.style.display =
+                    name.includes(
+                        value
+                    )
+                    ? "block"
+                    : "none";
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+function updateLocation(){
+
+    let closest =
+        null;
+
+
+    let distance =
+        Infinity;
+
+
+    businessData.forEach(
+        function(data){
+
+            const dx =
+                player.position.x -
+                data.x;
+
+
+            const dz =
+                player.position.z -
+                data.z;
+
+
+            const d =
+                Math.sqrt(
+                    dx*dx +
+                    dz*dz
+                );
+
+
+            if(
+                d < distance
+            ){
+
+                distance =
+                    d;
+
+
+                closest =
+                    data;
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "location"
+    ).textContent =
+
+        distance < 15
+        ? closest.name
+        : "Parque";
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function toast(
+    message
+){
+
+    const element =
+        document.getElementById(
+            "toast"
+        );
+
+
+    element.textContent =
+        message;
+
+
+    element.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function(){
+
+                element.classList.remove(
+                    "show"
+                );
+
+            },
+            1800
+        );
+
+}
+
+
+/* =========================================================
+   MINIMAP
+========================================================= */
+
+function updateMinimap(){
+
+    if(
+        !player
+    ){
+
+        return;
+
+    }
+
+
+    const canvas =
+        document.getElementById(
+            "minimap"
+        );
+
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    const w =
+        canvas.width;
+
+
+    const h =
+        canvas.height;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        w,
+        h
+    );
+
+
+    ctx.fillStyle =
+        "#355e3d";
+
+
+    ctx.fillRect(
+        0,
+        0,
+        w,
+        h
+    );
+
+
+    function mapX(x){
+
+        return (
+            (x+105) /
+            210
+        ) * w;
+
+    }
+
+
+    function mapZ(z){
+
+        return (
+            (z+85) /
+            170
+        ) * h;
+
+    }
+
+
+    /* LAGUNA */
+
+    ctx.fillStyle =
+        "#4e9296";
+
+
+    ctx.beginPath();
+
+
+    ctx.ellipse(
+        mapX(0),
+        mapZ(0),
+
+        43/210*w,
+        22/170*h,
+
+        0,
+        0,
+        Math.PI*2
+    );
+
+
+    ctx.fill();
+
+
+    /* CAMINOS */
+
+    ctx.strokeStyle =
+        "rgba(230,220,190,.45)";
+
+
+    ctx.lineWidth =
+        4;
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        mapX(-100),
+        mapZ(0)
+    );
+
+
+    ctx.lineTo(
+        mapX(100),
+        mapZ(0)
+    );
+
+
+    ctx.moveTo(
+        mapX(0),
+        mapZ(-80)
+    );
+
+
+    ctx.lineTo(
+        mapX(0),
+        mapZ(80)
+    );
+
+
+    ctx.stroke();
+
+
+    /* EDIFICIOS */
+
+    businessData.forEach(
+        function(data){
+
+            ctx.fillStyle =
+                data ===
+                selectedBusiness
+
+                ? "#ffe18b"
+
+                : "#d8d0a7";
+
+
+            ctx.fillRect(
+                mapX(data.x)-3,
+                mapZ(data.z)-3,
+                6,
+                6
+            );
+
+        }
+    );
+
+
+    /* RUTA */
+
+    if(
+        routePoints.length
+    ){
+
+        ctx.strokeStyle =
+            "#ffe18b";
+
+
+        ctx.lineWidth =
+            2;
+
+
+        ctx.beginPath();
+
+
+        routePoints.forEach(
+            function(
+                point,
+                index
+            ){
+
+                const x =
+                    mapX(
+                        point.x
+                    );
+
+
+                const z =
+                    mapZ(
+                        point.z
+                    );
+
+
+                if(
+                    index === 0
+                ){
+
+                    ctx.moveTo(
+                        x,
+                        z
+                    );
+
+                }
+                else{
+
+                    ctx.lineTo(
+                        x,
+                        z
+                    );
+
+                }
+
+            }
+        );
+
+
+        ctx.stroke();
+
+    }
+
+
+    /* PLAYER */
+
+    ctx.fillStyle =
+        "#ffffff";
+
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        mapX(
+            player.position.x
+        ),
+        mapZ(
+            player.position.z
+        ),
+        5,
+        0,
+        Math.PI*2
+    );
+
+
+    ctx.fill();
+
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    const delta =
+        Math.min(
+            clock.getDelta(),
+            .05
+        );
+
+
+    waterTime +=
+        delta;
+
+
+    /* AGUA */
+
+    if(
+        water
+    ){
+
+        water.position.y =
+            .13 +
+            Math.sin(
+                waterTime * 1.4
+            ) * .025;
+
+
+        water.rotation.z =
+            Math.sin(
+                waterTime * .15
+            ) * .008;
+
+    }
+
+
+    updatePlayer(
+        delta
+    );
+
+
+    updateNPCs(
+        delta
+    );
+
+
+    updateCamera();
+
+
+    if(
+        routeLine
+    ){
+
+        routeLine.material
+            .dashOffset -=
+            delta*.8;
+
+    }
+
+
+    updateMinimap();
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+/* =========================================================
+   RESIZE
+========================================================= */
+
+function onResize(){
+
+    if(
+        !camera ||
+        !renderer
+    ){
+
+        return;
+
+    }
+
+
+    camera.aspect =
+        window.innerWidth /
+        window.innerHeight;
+
+
+    camera.updateProjectionMatrix();
+
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+}
+
+/* =========================================================
+   MOBILE UX PRO
+========================================================= */
+(function(){
+    const panel = document.getElementById("search-panel");
+    const toggle = document.getElementById("mobile-search-toggle");
+    const backdrop = document.getElementById("search-backdrop");
+
+    function closeMobileSearch(){
+        panel.classList.remove("mobile-open");
+        backdrop.classList.remove("mobile-open");
+        toggle.textContent = "⌕";
+    }
+
+    toggle.addEventListener("click",function(){
+        const open = !panel.classList.contains("mobile-open");
+        panel.classList.toggle("mobile-open",open);
+        backdrop.classList.toggle("mobile-open",open);
+        toggle.textContent = open ? "×" : "⌕";
+    });
+
+    backdrop.addEventListener("click",closeMobileSearch);
+
+    document.querySelectorAll(".business-item").forEach(function(item){
+        item.addEventListener("click",function(){
+            if(window.innerWidth <= 700){
+                setTimeout(closeMobileSearch,180);
+            }
+        });
+    });
+
+    document.getElementById("mobile-center").addEventListener("click",centerPlayer);
+    document.getElementById("mobile-view").addEventListener("click",toggleTopView);
+    document.getElementById("mobile-zoom-in").addEventListener("click",function(){
+        cameraDistance=Math.max(8,cameraDistance-4);
+        toast("Vista acercada");
+    });
+    document.getElementById("mobile-zoom-out").addEventListener("click",function(){
+        cameraDistance=Math.min(45,cameraDistance+4);
+        toast("Vista alejada");
+    });
+
+    window.addEventListener("blur",function(){
+        Object.keys(keys).forEach(function(key){ keys[key]=false; });
+    });
+})();
+
+</script>
+
+</body>
+</html>
