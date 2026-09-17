@@ -27,7 +27,7 @@
     --sage:#7f9f82;
     --cream:#f4efdf;
     --white:#ffffff;
-    --glass:rgba(12,35,25,.88);
+    --glass:rgba(12,35,25,.9);
     --border:rgba(255,255,255,.15);
 }
 
@@ -121,20 +121,20 @@ canvas{
 }
 
 /* =========================
-   CABECERA ADAPTABLE (Brand & Status)
+   CABECERA (Brand & Status)
 ========================= */
 
 #brand{
     position:fixed;
     z-index:30;
-    left:max(10px, 2vw);
-    top:max(10px, 2vh);
+    left:10px;
+    top:10px;
     padding:8px 12px;
     border-radius:12px;
 }
 
 .brand-title{
-    font-size:clamp(14px, 3.5vw, 20px);
+    font-size:16px;
     font-weight:800;
     letter-spacing:-1px;
 }
@@ -144,7 +144,7 @@ canvas{
 }
 
 .brand-sub{
-    font-size:clamp(7px, 1.5vw, 9px);
+    font-size:7px;
     opacity:.6;
     letter-spacing:1px;
     text-transform:uppercase;
@@ -153,18 +153,18 @@ canvas{
 #status{
     position:fixed;
     z-index:30;
-    right:max(10px, 2vw);
-    top:max(10px, 2vh);
+    right:10px;
+    top:10px;
     padding:8px 12px;
     border-radius:12px;
-    min-width:clamp(120px, 25vw, 180px);
+    min-width:130px;
 }
 
 .status-row{
     display:flex;
     justify-content:space-between;
     gap:8px;
-    font-size:clamp(9px, 2vw, 11px);
+    font-size:9px;
     margin-bottom:2px;
 }
 
@@ -189,7 +189,7 @@ canvas{
     z-index:80;
     right:0;
     top:0;
-    width:min(90vw, 320px);
+    width:min(90vw, 300px);
     height:100vh;
     height:100dvh;
     border-radius:20px 0 0 20px;
@@ -236,7 +236,6 @@ canvas{
     border-radius:8px;
     cursor:pointer;
     margin-bottom:3px;
-    transition:background .2s;
 }
 
 .business-item:hover,
@@ -270,23 +269,23 @@ canvas{
 }
 
 /* =========================
-   INFO PANEL (Tarjeta Flotante Inteligente)
+   INFO PANEL (Tarjeta Flotante)
 ========================= */
 
 #info{
     position:fixed;
-    z-index:40;
-    left:max(10px, 2vw);
-    right:max(10px, 2vw);
-    bottom:max(70px, 12vh);
-    max-width:420px;
+    z-index:70;
+    left:10px;
+    right:10px;
+    bottom:15px; /* Arriba del todo en la parte inferior cuando se abre */
+    max-width:450px;
     margin:0 auto;
-    padding:14px;
+    padding:12px 16px;
     border-radius:16px;
-    max-height:35vh;
+    max-height:30vh;
     overflow-y:auto;
-    transform:translateY(150%);
-    transition:transform .35s cubic-bezier(0.1, 0.9, 0.2, 1);
+    transform:translateY(200%);
+    transition:transform .3s cubic-bezier(0.1, 0.9, 0.2, 1);
 }
 
 #info.open{
@@ -313,38 +312,38 @@ canvas{
 }
 
 #info-title{
-    font-size:clamp(16px, 4vw, 20px);
+    font-size:16px;
     margin-top:2px;
 }
 
 #info-description{
-    margin-top:6px;
-    line-height:1.4;
-    font-size:clamp(10px, 2.5vw, 12px);
+    margin-top:4px;
+    line-height:1.3;
+    font-size:11px;
     opacity:.75;
 }
 
 .info-status{
     display:inline-block;
-    margin-top:8px;
-    padding:3px 8px;
+    margin-top:6px;
+    padding:2px 6px;
     background:rgba(130,190,130,.15);
     border:1px solid rgba(130,190,130,.2);
-    border-radius:12px;
+    border-radius:10px;
     font-size:8px;
 }
 
 .info-buttons{
     display:flex;
     gap:6px;
-    margin-top:10px;
+    margin-top:8px;
 }
 
 .btn{
     border:none;
     cursor:pointer;
     border-radius:8px;
-    padding:8px 12px;
+    padding:6px 10px;
     font-weight:700;
     font-size:10px;
 }
@@ -360,14 +359,14 @@ canvas{
 }
 
 /* =========================
-   ELEMENTOS DE INTERACCIÓN MÓVIL
+   ELEMENTOS MÓVILES (Distribución Limpia)
 ========================= */
 
 #mobile-hint{
     position:fixed;
     z-index:25;
     left:50%;
-    top:max(60px, 10vh);
+    top:65px;
     transform:translateX(-50%);
     padding:4px 10px;
     border-radius:999px;
@@ -384,8 +383,8 @@ canvas{
     display:flex;
     position:fixed;
     z-index:60;
-    top:max(62px, 10vh);
-    right:12px;
+    top:65px;
+    right:10px;
     width:36px;
     height:36px;
     align-items:center;
@@ -397,32 +396,13 @@ canvas{
     font-size:16px;
 }
 
-/* Minimapa dinámico */
-#minimap-box{
-    position:fixed;
-    z-index:20;
-    right:12px;
-    bottom:max(75px, 13vh);
-    width:clamp(90px, 20vw, 130px);
-    padding:4px;
-    border-radius:10px;
-}
-
-#minimap{
-    width:100%;
-    height:auto;
-    display:block;
-    border-radius:6px;
-    background:#244b35;
-}
-
-/* Controles Táctiles (D-Pad Movimiento) */
+/* Controles Táctiles (D-Pad Movimiento abajo a la izquierda) */
 #mobile-controls{
     display:block;
     position:fixed;
     z-index:50;
     left:10px;
-    bottom:10px;
+    bottom:15px;
     width:110px;
     height:110px;
 }
@@ -433,7 +413,7 @@ canvas{
     height:36px;
     border-radius:9px;
     border:1px solid rgba(255,255,255,.15);
-    background:rgba(15,40,28,.88);
+    background:rgba(15,40,28,.9);
     color:white;
     touch-action:none;
     display:flex;
@@ -447,20 +427,39 @@ canvas{
 .mobile-down  { left:37px; top:37px; }
 .mobile-right { left:74px; top:37px; }
 
-/* Botones rápidos verticales (Derecha inferior: Vistas y Centrar) */
+/* Minimapa ubicado a la derecha de los controles de movimiento, sin pisarlos */
+#minimap-box{
+    position:fixed;
+    z-index:50;
+    left:128px;
+    bottom:15px;
+    width:110px;
+    padding:4px;
+    border-radius:10px;
+}
+
+#minimap{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:6px;
+    background:#244b35;
+}
+
+/* Botones rápidos (Vistas, Centrar y Zoom) ordenados abajo a la derecha */
 #mobile-quick{
     display:flex;
     position:fixed;
     z-index:50;
-    right:12px;
-    bottom:max(185px, 28vh);
+    right:10px;
+    bottom:15px;
     flex-direction:column;
     gap:6px;
 }
 
 .quick-btn{
-    width:36px;
-    height:36px;
+    width:38px;
+    height:38px;
     border:1px solid rgba(255,255,255,.15);
     border-radius:10px;
     background:rgba(15,40,28,.9);
@@ -524,6 +523,7 @@ canvas{
         bottom:15px;
         right:15px;
         width:150px;
+        left:auto;
     }
 
     #info{
@@ -879,6 +879,7 @@ canvas{
 </div>
 
 
+
 <script>
 
 /* =========================================================
@@ -900,7 +901,6 @@ let npcs = [];
 
 let selectedBusiness = null;
 let selectedBuilding = null;
-
 let hoveredBuilding = null;
 
 let routeLine = null;
@@ -916,11 +916,8 @@ let cameraDistance = 22;
 let cameraAngle = 0.7;
 let cameraHeight = 10;
 
-let targetCameraPosition =
-    new THREE.Vector3();
-
-let cameraTarget =
-    new THREE.Vector3();
+let targetCameraPosition = new THREE.Vector3();
+let cameraTarget = new THREE.Vector3();
 
 let mouseDown = false;
 let mouseMoved = false;
@@ -929,16 +926,13 @@ let lastMouseX = 0;
 let lastMouseY = 0;
 
 let waterTime = 0;
-
 let water = null;
+let poolWater = null;
 
 let toastTimer = null;
 
-const raycaster =
-    new THREE.Raycaster();
-
-const mouse =
-    new THREE.Vector2();
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
 
 
 /* =========================================================
@@ -952,15 +946,10 @@ const businessData = [
         name:"Cabañas",
         label:"CABAÑAS",
         category:"Alojamiento",
-
         x:-68,
         z:-48,
-
         color:0x9b7653,
-
-        description:
-            "Cabañas rodeadas de naturaleza para disfrutar una estadía tranquila junto a la laguna.",
-
+        description:"Cabañas rodeadas de naturaleza para disfrutar una estadía tranquila junto a la laguna.",
         routeX:-68,
         routeZ:-37
     },
@@ -970,15 +959,10 @@ const businessData = [
         name:"Glamping",
         label:"GLAMPING",
         category:"Alojamiento",
-
         x:-43,
         z:-48,
-
         color:0x866e52,
-
-        description:
-            "Una experiencia de alojamiento diferente combinando naturaleza, comodidad y diseño.",
-
+        description:"Una experiencia de alojamiento diferente combinando naturaleza, comodidad y diseño.",
         routeX:-43,
         routeZ:-37
     },
@@ -988,15 +972,10 @@ const businessData = [
         name:"Spa & Wellness",
         label:"SPA",
         category:"Bienestar",
-
         x:43,
         z:-48,
-
         color:0x718b7c,
-
-        description:
-            "Espacio dedicado al descanso, masajes, relajación y bienestar.",
-
+        description:"Espacio dedicado al descanso, masajes, relajación y bienestar.",
         routeX:43,
         routeZ:-37
     },
@@ -1006,15 +985,10 @@ const businessData = [
         name:"Beach Club",
         label:"BEACH CLUB",
         category:"Entretenimiento",
-
         x:68,
         z:-48,
-
         color:0xd8ad68,
-
-        description:
-            "Sector de playa, descanso y actividades para disfrutar junto al agua.",
-
+        description:"Sector de playa, descanso y actividades para disfrutar junto al agua.",
         routeX:68,
         routeZ:-37
     },
@@ -1024,15 +998,10 @@ const businessData = [
         name:"Restaurante",
         label:"RESTAURANTE",
         category:"Gastronomía",
-
         x:-68,
         z:48,
-
         color:0x9c674d,
-
-        description:
-            "Restaurante principal con gastronomía y espacios para compartir.",
-
+        description:"Restaurante principal con gastronomía y espacios para compartir.",
         routeX:-68,
         routeZ:37
     },
@@ -1042,15 +1011,10 @@ const businessData = [
         name:"Mundo Cookie",
         label:"MUNDO COOKIE",
         category:"Gastronomía",
-
         x:-43,
         z:48,
-
         color:0xc88c68,
-
-        description:
-            "Un espacio temático pensado para disfrutar productos dulces y experiencias familiares.",
-
+        description:"Un espacio temático pensado para disfrutar productos dulces y experiencias familiares.",
         routeX:-43,
         routeZ:37
     },
@@ -1060,15 +1024,10 @@ const businessData = [
         name:"Emprendedores",
         label:"EMPRENDEDORES",
         category:"Comercial",
-
         x:43,
         z:48,
-
         color:0x78906d,
-
-        description:
-            "Paseo de emprendimientos y productos locales.",
-
+        description:"Paseo de emprendimientos y productos locales.",
         routeX:43,
         routeZ:37
     },
@@ -1078,15 +1037,10 @@ const businessData = [
         name:"Actividades Acuáticas",
         label:"ACTIVIDADES",
         category:"Náutica",
-
         x:68,
         z:48,
-
         color:0x547d89,
-
-        description:
-            "Actividades recreativas sobre la laguna, incluyendo kayaks y propuestas acuáticas.",
-
+        description:"Actividades recreativas sobre la laguna, incluyendo kayaks y propuestas acuáticas.",
         routeX:68,
         routeZ:37
     },
@@ -1096,15 +1050,10 @@ const businessData = [
         name:"Parque Aventura",
         label:"AVENTURA",
         category:"Entretenimiento",
-
         x:-72,
         z:5,
-
         color:0x69774d,
-
-        description:
-            "Circuitos de aventura y actividades al aire libre.",
-
+        description:"Circuitos de aventura y actividades al aire libre.",
         routeX:-60,
         routeZ:5
     },
@@ -1114,15 +1063,10 @@ const businessData = [
         name:"Sector Infantil",
         label:"INFANTIL",
         category:"Familias",
-
         x:-72,
         z:-10,
-
         color:0xc2925b,
-
-        description:
-            "Espacio diseñado para que los más chicos puedan jugar y divertirse.",
-
+        description:"Espacio diseñado para que los más chicos puedan jugar y divertirse.",
         routeX:-60,
         routeZ:-10
     },
@@ -1132,15 +1076,10 @@ const businessData = [
         name:"Eventos",
         label:"EVENTOS",
         category:"Eventos",
-
         x:72,
         z:5,
-
         color:0x725b7e,
-
-        description:
-            "Espacio para eventos, encuentros, celebraciones y actividades especiales.",
-
+        description:"Espacio para eventos, encuentros, celebraciones y actividades especiales.",
         routeX:60,
         routeZ:5
     },
@@ -1150,15 +1089,10 @@ const businessData = [
         name:"Experiencias",
         label:"EXPERIENCIAS",
         category:"Actividades",
-
         x:72,
         z:-10,
-
         color:0x617c76,
-
-        description:
-            "Punto de partida para diferentes experiencias y actividades dentro del parque.",
-
+        description:"Punto de partida para diferentes experiencias y actividades dentro del parque.",
         routeX:60,
         routeZ:-10
     }
@@ -1170,48 +1104,41 @@ const businessData = [
    INICIO
 ========================================================= */
 
-window.addEventListener(
-    "load",
-    function(){
+window.addEventListener("load",function(){
 
-        startLoading();
+    startLoading();
 
-        try{
+    try{
 
-            init();
+        init();
 
-            if(
-                renderer &&
-                scene &&
-                camera &&
-                clock
-            ){
+        if(renderer && scene && camera && clock){
+            animate();
+        }
 
-                animate();
+    }catch(error){
 
-            }
+        console.error("Error iniciando Laguna Experience:",error);
 
-        }catch(error){
+        const loadingText =
+            document.getElementById("loading-text");
 
-            console.error(
-                "Error iniciando Laguna Experience:",
-                error
-            );
+        const progressBar =
+            document.getElementById("progress-bar");
 
-            document.getElementById(
-                "loading-text"
-            ).textContent =
+        if(loadingText){
+            loadingText.textContent =
                 "Error al iniciar la experiencia.";
+        }
 
-            document.getElementById(
-                "progress-bar"
-            ).style.background =
+        if(progressBar){
+            progressBar.style.background =
                 "#d66";
-
         }
 
     }
-);
+
+});
 
 
 /* =========================================================
@@ -1222,88 +1149,57 @@ function startLoading(){
 
     let progress = 0;
 
-    const interval =
-        setInterval(
-            function(){
+    const interval = setInterval(function(){
 
-                progress +=
-                    Math.random() * 18;
+        progress += Math.random() * 18;
 
-                if(progress >= 100){
+        if(progress >= 100){
 
-                    progress = 100;
+            progress = 100;
 
-                    clearInterval(
-                        interval
-                    );
+            clearInterval(interval);
 
-                    document.getElementById(
-                        "loading-text"
-                    ).textContent =
-                        "Experiencia lista";
+            document.getElementById("loading-text").textContent =
+                "Experiencia lista";
 
-                    setTimeout(
-                        function(){
+            setTimeout(function(){
 
-                            const loading =
-                                document.getElementById(
-                                    "loading"
-                                );
+                const loading =
+                    document.getElementById("loading");
 
-                            loading.style.opacity =
-                                "0";
+                loading.style.opacity = "0";
 
-                            setTimeout(
-                                function(){
+                setTimeout(function(){
 
-                                    loading.style.display =
-                                        "none";
+                    loading.style.display = "none";
 
-                                },
-                                600
-                            );
+                },600);
 
-                        },
-                        400
-                    );
+            },400);
 
-                }
+        }
 
+        document.getElementById("progress-bar").style.width =
+            progress + "%";
 
-                document.getElementById(
-                    "progress-bar"
-                ).style.width =
-                    progress + "%";
+        if(progress < 30){
 
+            document.getElementById("loading-text").textContent =
+                "Preparando el parque...";
 
-                if(progress < 30){
+        }else if(progress < 60){
 
-                    document.getElementById(
-                        "loading-text"
-                    ).textContent =
-                        "Preparando el parque...";
+            document.getElementById("loading-text").textContent =
+                "Construyendo espacios...";
 
-                }
-                else if(progress < 60){
+        }else if(progress < 90){
 
-                    document.getElementById(
-                        "loading-text"
-                    ).textContent =
-                        "Construyendo espacios...";
+            document.getElementById("loading-text").textContent =
+                "Preparando experiencias...";
 
-                }
-                else if(progress < 90){
+        }
 
-                    document.getElementById(
-                        "loading-text"
-                    ).textContent =
-                        "Preparando experiencias...";
-
-                }
-
-            },
-            120
-        );
+    },120);
 
 }
 
@@ -1314,27 +1210,14 @@ function startLoading(){
 
 function init(){
 
-    if(
-        typeof THREE ===
-        "undefined"
-    ){
-
-        throw new Error(
-            "Three.js no pudo cargarse."
-        );
-
+    if(typeof THREE === "undefined"){
+        throw new Error("Three.js no pudo cargarse.");
     }
 
-
-    scene =
-        new THREE.Scene();
-
+    scene = new THREE.Scene();
 
     scene.background =
-        new THREE.Color(
-            0x9eb8a1
-        );
-
+        new THREE.Color(0x9eb8a1);
 
     scene.fog =
         new THREE.Fog(
@@ -1343,102 +1226,62 @@ function init(){
             260
         );
 
-
-    clock =
-        new THREE.Clock();
-
+    clock = new THREE.Clock();
 
     camera =
         new THREE.PerspectiveCamera(
             55,
-            window.innerWidth /
-            window.innerHeight,
+            window.innerWidth / window.innerHeight,
             .1,
             500
         );
 
-
-    camera.position.set(
-        0,
-        12,
-        22
-    );
-
+    camera.position.set(0,12,22);
 
     renderer =
         new THREE.WebGLRenderer({
             antialias:true,
-            powerPreference:
-                "high-performance"
+            powerPreference:"high-performance"
         });
-
 
     renderer.setSize(
         window.innerWidth,
         window.innerHeight
     );
 
-
     renderer.setPixelRatio(
-        Math.min(
-            window.devicePixelRatio,
-            2
-        )
+        Math.min(window.devicePixelRatio,2)
     );
 
-
-    renderer.shadowMap.enabled =
-        true;
-
-
+    renderer.shadowMap.enabled = true;
     renderer.shadowMap.type =
         THREE.PCFSoftShadowMap;
-
 
     renderer.outputColorSpace =
         THREE.SRGBColorSpace;
 
-
     renderer.toneMapping =
         THREE.ACESFilmicToneMapping;
 
-
-    renderer.toneMappingExposure =
-        1.15;
-
+    renderer.toneMappingExposure = 1.15;
 
     document
         .getElementById("game")
-        .appendChild(
-            renderer.domElement
-        );
-
+        .appendChild(renderer.domElement);
 
     createLights();
-
     createGround();
-
     createLake();
-
     createRoads();
-
     createBuildings();
-
+    createPool();
     createEnvironment();
-
     createPlayer();
-
     createNPCs();
-
     createBusinessList();
-
     setupEvents();
 
-
-    window.addEventListener(
-        "resize",
-        onResize
-    );
+    window.addEventListener("resize",onResize);
 
 }
 
@@ -1456,10 +1299,7 @@ function createLights(){
             2
         );
 
-    scene.add(
-        hemisphere
-    );
-
+    scene.add(hemisphere);
 
     const sun =
         new THREE.DirectionalLight(
@@ -1467,48 +1307,22 @@ function createLights(){
             3
         );
 
+    sun.position.set(-60,100,-50);
 
-    sun.position.set(
-        -60,
-        100,
-        -50
-    );
+    sun.castShadow = true;
 
+    sun.shadow.mapSize.width = 2048;
+    sun.shadow.mapSize.height = 2048;
 
-    sun.castShadow =
-        true;
+    sun.shadow.camera.left = -130;
+    sun.shadow.camera.right = 130;
+    sun.shadow.camera.top = 130;
+    sun.shadow.camera.bottom = -130;
 
+    sun.shadow.camera.near = 1;
+    sun.shadow.camera.far = 300;
 
-    sun.shadow.mapSize.width =
-        2048;
-
-    sun.shadow.mapSize.height =
-        2048;
-
-
-    sun.shadow.camera.left =
-        -130;
-
-    sun.shadow.camera.right =
-        130;
-
-    sun.shadow.camera.top =
-        130;
-
-    sun.shadow.camera.bottom =
-        -130;
-
-
-    sun.shadow.camera.near =
-        1;
-
-    sun.shadow.camera.far =
-        300;
-
-
-    scene.add(
-        sun
-    );
+    scene.add(sun);
 
 }
 
@@ -1520,11 +1334,7 @@ function createLights(){
 function createGround(){
 
     const geometry =
-        new THREE.PlaneGeometry(
-            210,
-            170
-        );
-
+        new THREE.PlaneGeometry(210,170);
 
     const material =
         new THREE.MeshStandardMaterial({
@@ -1532,33 +1342,24 @@ function createGround(){
             roughness:1
         });
 
-
     const ground =
         new THREE.Mesh(
             geometry,
             material
         );
 
-
     ground.rotation.x =
         -Math.PI / 2;
 
+    ground.receiveShadow = true;
 
-    ground.receiveShadow =
-        true;
-
-
-    scene.add(
-        ground
-    );
-
+    scene.add(ground);
 
     const borderMaterial =
         new THREE.MeshStandardMaterial({
             color:0x355a3b,
             roughness:1
         });
-
 
     const border =
         new THREE.Mesh(
@@ -1570,14 +1371,9 @@ function createGround(){
             borderMaterial
         );
 
+    border.position.y = -.8;
 
-    border.position.y =
-        -.8;
-
-
-    scene.add(
-        border
-    );
+    scene.add(border);
 
 }
 
@@ -1590,43 +1386,24 @@ function createLake(){
 
     const beach =
         new THREE.Mesh(
-            new THREE.CircleGeometry(
-                36,
-                80
-            ),
+            new THREE.CircleGeometry(36,80),
             new THREE.MeshStandardMaterial({
                 color:0xd8c596,
                 roughness:1
             })
         );
 
-
     beach.rotation.x =
         -Math.PI / 2;
 
+    beach.scale.set(1.35,.68,1);
 
-    beach.scale.set(
-        1.35,
-        .68,
-        1
-    );
+    beach.position.y = .02;
 
-
-    beach.position.y =
-        .02;
-
-
-    scene.add(
-        beach
-    );
-
+    scene.add(beach);
 
     const geometry =
-        new THREE.CircleGeometry(
-            32,
-            80
-        );
-
+        new THREE.CircleGeometry(32,80);
 
     const material =
         new THREE.MeshStandardMaterial({
@@ -1637,51 +1414,219 @@ function createLake(){
             opacity:.9
         });
 
-
     water =
         new THREE.Mesh(
             geometry,
             material
         );
 
-
     water.rotation.x =
         -Math.PI / 2;
 
+    water.scale.set(1.35,.68,1);
 
-    water.scale.set(
-        1.35,
-        .68,
-        1
-    );
+    water.position.y = .13;
 
+    scene.add(water);
 
-    water.position.y =
-        .13;
-
-
-    scene.add(
-        water
-    );
-
-    /* REFLEJOS / ONDAS SUAVES PARA DIFERENCIAR EL AGUA */
     for(let i=0;i<3;i++){
-        const ripple = new THREE.Mesh(
-            new THREE.TorusGeometry(8 + i*6, .08, 8, 64),
-            new THREE.MeshBasicMaterial({
-                color:0xb8e4df,
-                transparent:true,
-                opacity:.22
-            })
-        );
-        ripple.rotation.x = Math.PI / 2;
+
+        const ripple =
+            new THREE.Mesh(
+                new THREE.TorusGeometry(
+                    8 + i*6,
+                    .08,
+                    8,
+                    64
+                ),
+                new THREE.MeshBasicMaterial({
+                    color:0xb8e4df,
+                    transparent:true,
+                    opacity:.22
+                })
+            );
+
+        ripple.rotation.x =
+            Math.PI / 2;
+
         ripple.scale.set(1.35,.68,1);
-        ripple.position.y = .19 + i*.015;
+
+        ripple.position.y =
+            .19 + i*.015;
+
         scene.add(ripple);
+
     }
 
     obstacles.push({
         type:"lake"
+    });
+
+}
+
+
+/* =========================================================
+   PILETA BEACH CLUB
+========================================================= */
+
+function createPool(){
+
+    /*
+        Pileta ubicada cerca del Beach Club.
+        Está fuera de la laguna principal.
+        Coordenadas aproximadas:
+        x = 82
+        z = -28
+    */
+
+    const poolGroup =
+        new THREE.Group();
+
+    poolGroup.position.set(
+        82,
+        0,
+        -28
+    );
+
+    /* BORDE */
+
+    const poolBorder =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                22,
+                .35,
+                13
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0xe3d5b2,
+                roughness:.9
+            })
+        );
+
+    poolBorder.position.y = .18;
+
+    poolBorder.receiveShadow = true;
+
+    poolGroup.add(poolBorder);
+
+
+    /* AGUA */
+
+    const pool =
+        new THREE.Mesh(
+            new THREE.BoxGeometry(
+                19,
+                .18,
+                10
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0x48a8b5,
+                roughness:.15,
+                metalness:.05,
+                transparent:true,
+                opacity:.94
+            })
+        );
+
+    pool.position.y = .4;
+
+    pool.receiveShadow = true;
+
+    poolGroup.add(pool);
+
+    poolWater = pool;
+
+
+    /* ESCALERA */
+
+    const stairMaterial =
+        new THREE.MeshStandardMaterial({
+            color:0xe9e0c9
+        });
+
+    for(let i=0;i<3;i++){
+
+        const step =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    3,
+                    .18,
+                    .65
+                ),
+                stairMaterial
+            );
+
+        step.position.set(
+            -6 + i*.8,
+            .55 + i*.08,
+            0
+        );
+
+        poolGroup.add(step);
+
+    }
+
+
+    /* CAMASTROS */
+
+    const loungerMaterial =
+        new THREE.MeshStandardMaterial({
+            color:0xf1e4c5
+        });
+
+    for(let i=0;i<3;i++){
+
+        const lounger =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    2.8,
+                    .15,
+                    .9
+                ),
+                loungerMaterial
+            );
+
+        lounger.position.set(
+            0 + i*3.2,
+            .45,
+            -7
+        );
+
+        lounger.rotation.y =
+            -.08;
+
+        poolGroup.add(lounger);
+
+    }
+
+
+    /* CARTEL */
+
+    const sign =
+        createSign("PILETA");
+
+    sign.position.set(
+        0,
+        3.2,
+        6.7
+    );
+
+    poolGroup.add(sign);
+
+
+    scene.add(poolGroup);
+
+    /*
+        La pileta se considera obstáculo.
+        Así el jugador no puede atravesarla.
+    */
+
+    obstacles.push({
+        type:"pool",
+        x:82,
+        z:-28,
+        w:19,
+        d:10
     });
 
 }
@@ -1699,20 +1644,13 @@ function createRoads(){
             roughness:1
         });
 
-
     const sideMaterial =
         new THREE.MeshStandardMaterial({
             color:0x9a987f,
             roughness:1
         });
 
-
-    function road(
-        x,
-        z,
-        w,
-        d
-    ){
+    function road(x,z,w,d){
 
         const side =
             new THREE.Mesh(
@@ -1724,22 +1662,11 @@ function createRoads(){
                 sideMaterial
             );
 
+        side.position.set(x,.07,z);
 
-        side.position.set(
-            x,
-            .07,
-            z
-        );
+        side.receiveShadow = true;
 
-
-        side.receiveShadow =
-            true;
-
-
-        scene.add(
-            side
-        );
-
+        scene.add(side);
 
         const r =
             new THREE.Mesh(
@@ -1751,85 +1678,47 @@ function createRoads(){
                 roadMaterial
             );
 
+        r.position.set(x,.13,z);
 
-        r.position.set(
-            x,
-            .13,
-            z
-        );
+        r.receiveShadow = true;
 
-
-        r.receiveShadow =
-            true;
-
-
-        scene.add(
-            r
-        );
+        scene.add(r);
 
     }
 
+    /*
+        CAMINOS PERIMETRALES.
+        NO SE CONSTRUYE NINGÚN CAMINO SOBRE EL AGUA.
+    */
 
-    /* CAMINOS ALREDEDOR DE LA LAGUNA — EL AGUA QUEDA LIBRE */
+    road(-68,0,54,7);
+    road(68,0,54,7);
+
+    road(0,-51,7,42);
+    road(0,51,7,42);
+
+    road(-58,0,6,145);
+    road(58,0,6,145);
+
+    road(0,-40,190,6);
+    road(0,40,190,6);
+
+    /*
+        ACCESO AL BEACH CLUB Y PILETA
+    */
 
     road(
-        -68,
-        0,
-        54,
-        7
+        80,
+        -38,
+        42,
+        5
     );
 
     road(
-        68,
-        0,
-        54,
-        7
-    );
-
-    road(
-        0,
-        -51,
-        7,
-        42
-    );
-
-    road(
-        0,
-        51,
-        7,
-        42
-    );
-
-
-    road(
-        -58,
-        0,
-        6,
-        145
-    );
-
-
-    road(
-        58,
-        0,
-        6,
-        145
-    );
-
-
-    road(
-        0,
-        -40,
-        190,
-        6
-    );
-
-
-    road(
-        0,
-        40,
-        190,
-        6
+        92,
+        -28,
+        5,
+        20
     );
 
 }
@@ -1841,42 +1730,28 @@ function createRoads(){
 
 function createBuildings(){
 
-    businessData.forEach(
-        function(data){
+    businessData.forEach(function(data){
 
-            const group =
-                createBuilding(
-                    data
-                );
+        const group =
+            createBuilding(data);
 
+        buildings.push(group);
 
-            buildings.push(
-                group
-            );
+        scene.add(group);
 
+        buildingMeshes.push(
+            group.userData.clickMesh
+        );
 
-            scene.add(
-                group
-            );
+        obstacles.push({
+            type:"building",
+            x:data.x,
+            z:data.z,
+            w:10,
+            d:9
+        });
 
-
-            buildingMeshes.push(
-                group.userData.clickMesh
-            );
-
-
-            obstacles.push({
-                type:"building",
-
-                x:data.x,
-                z:data.z,
-
-                w:10,
-                d:9
-            });
-
-        }
-    );
+    });
 
 }
 
@@ -1886,19 +1761,14 @@ function createBuilding(data){
     const group =
         new THREE.Group();
 
-
     group.position.set(
         data.x,
         0,
         data.z
     );
 
-
     group.userData.business =
         data;
-
-
-    /* CUERPO */
 
     const body =
         new THREE.Mesh(
@@ -1913,33 +1783,17 @@ function createBuilding(data){
             })
         );
 
+    body.position.y = 2.5;
 
-    body.position.y =
-        2.5;
+    body.castShadow = true;
+    body.receiveShadow = true;
 
+    group.add(body);
 
-    body.castShadow =
-        true;
+    group.userData.clickMesh = body;
 
+    body.userData.building = group;
 
-    body.receiveShadow =
-        true;
-
-
-    group.add(
-        body
-    );
-
-
-    group.userData.clickMesh =
-        body;
-
-
-    body.userData.building =
-        group;
-
-
-    /* TECHO */
 
     const roof =
         new THREE.Mesh(
@@ -1954,35 +1808,19 @@ function createBuilding(data){
             })
         );
 
-
     roof.rotation.y =
         Math.PI / 4;
 
+    roof.position.y = 6.6;
 
-    roof.position.y =
-        6.6;
+    roof.castShadow = true;
 
-
-    roof.castShadow =
-        true;
+    group.add(roof);
 
 
-    group.add(
-        roof
-    );
+    for(let side of [-1,1]){
 
-
-    /* VENTANAS */
-
-    for(
-        let side of [-1,1]
-    ){
-
-        for(
-            let i=-1;
-            i<=1;
-            i++
-        ){
+        for(let i=-1;i<=1;i++){
 
             const windowMesh =
                 new THREE.Mesh(
@@ -1998,24 +1836,18 @@ function createBuilding(data){
                     })
                 );
 
-
             windowMesh.position.set(
-                i * 2.5,
+                i*2.5,
                 2.9,
-                side * 4.05
+                side*4.05
             );
 
-
-            group.add(
-                windowMesh
-            );
+            group.add(windowMesh);
 
         }
 
     }
 
-
-    /* PUERTA */
 
     const door =
         new THREE.Mesh(
@@ -2029,26 +1861,17 @@ function createBuilding(data){
             })
         );
 
-
     door.position.set(
         0,
         1.3,
         4.05
     );
 
+    group.add(door);
 
-    group.add(
-        door
-    );
-
-
-    /* CARTEL */
 
     const sign =
-        createSign(
-            data.label
-        );
-
+        createSign(data.label);
 
     sign.position.set(
         0,
@@ -2056,13 +1879,8 @@ function createBuilding(data){
         4.2
     );
 
+    group.add(sign);
 
-    group.add(
-        sign
-    );
-
-
-    /* LUZ */
 
     const lamp =
         new THREE.PointLight(
@@ -2071,18 +1889,13 @@ function createBuilding(data){
             14
         );
 
-
     lamp.position.set(
         0,
         4,
         5
     );
 
-
-    group.add(
-        lamp
-    );
-
+    group.add(lamp);
 
     return group;
 
@@ -2096,27 +1909,15 @@ function createBuilding(data){
 function createSign(text){
 
     const canvas =
-        document.createElement(
-            "canvas"
-        );
+        document.createElement("canvas");
 
-
-    canvas.width =
-        512;
-
-    canvas.height =
-        128;
-
+    canvas.width = 512;
+    canvas.height = 128;
 
     const ctx =
-        canvas.getContext(
-            "2d"
-        );
+        canvas.getContext("2d");
 
-
-    ctx.fillStyle =
-        "#173f2c";
-
+    ctx.fillStyle = "#173f2c";
 
     ctx.fillRect(
         10,
@@ -2125,24 +1926,15 @@ function createSign(text){
         108
     );
 
-
-    ctx.fillStyle =
-        "#f4efdf";
-
+    ctx.fillStyle = "#f4efdf";
 
     ctx.font =
         text.length > 13
         ? "bold 27px Arial"
         : "bold 34px Arial";
 
-
-    ctx.textAlign =
-        "center";
-
-
-    ctx.textBaseline =
-        "middle";
-
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
 
     ctx.fillText(
         text,
@@ -2150,23 +1942,17 @@ function createSign(text){
         64
     );
 
-
     const texture =
-        new THREE.CanvasTexture(
-            canvas
-        );
-
+        new THREE.CanvasTexture(canvas);
 
     texture.colorSpace =
         THREE.SRGBColorSpace;
-
 
     const material =
         new THREE.MeshBasicMaterial({
             map:texture,
             transparent:true
         });
-
 
     return new THREE.Mesh(
         new THREE.PlaneGeometry(
@@ -2185,76 +1971,41 @@ function createSign(text){
 
 function createEnvironment(){
 
-    for(
-        let i=0;
-        i<100;
-        i++
-    ){
+    for(let i=0;i<100;i++){
 
         const x =
-            -95 +
-            Math.random()*190;
-
+            -95 + Math.random()*190;
 
         const z =
-            -75 +
-            Math.random()*150;
-
+            -75 + Math.random()*150;
 
         const lakeCheck =
             ((x/43)*(x/43)) +
             ((z/22)*(z/22));
 
-
         if(lakeCheck < 1.5){
-
             continue;
-
         }
-
 
         if(
             Math.abs(x)<20 &&
             Math.abs(z)<20
         ){
-
             continue;
-
         }
-
 
         createTree(
             x,
             z,
-            .8 +
-            Math.random()*.7
+            .8 + Math.random()*.7
         );
 
     }
 
-
-    createBench(
-        -25,
-        -27
-    );
-
-
-    createBench(
-        25,
-        -27
-    );
-
-
-    createBench(
-        -25,
-        27
-    );
-
-
-    createBench(
-        25,
-        27
-    );
+    createBench(-25,-27);
+    createBench(25,-27);
+    createBench(-25,27);
+    createBench(25,27);
 
 }
 
@@ -2263,27 +2014,14 @@ function createEnvironment(){
    TREE
 ========================================================= */
 
-function createTree(
-    x,
-    z,
-    scale
-){
+function createTree(x,z,scale){
 
     const tree =
         new THREE.Group();
 
+    tree.position.set(x,0,z);
 
-    tree.position.set(
-        x,
-        0,
-        z
-    );
-
-
-    tree.scale.setScalar(
-        scale
-    );
-
+    tree.scale.setScalar(scale);
 
     const trunk =
         new THREE.Mesh(
@@ -2298,25 +2036,12 @@ function createTree(
             })
         );
 
+    trunk.position.y = 1.75;
+    trunk.castShadow = true;
 
-    trunk.position.y =
-        1.75;
+    tree.add(trunk);
 
-
-    trunk.castShadow =
-        true;
-
-
-    tree.add(
-        trunk
-    );
-
-
-    for(
-        let i=0;
-        i<3;
-        i++
-    ){
+    for(let i=0;i<3;i++){
 
         const crown =
             new THREE.Mesh(
@@ -2333,28 +2058,19 @@ function createTree(
                 })
             );
 
-
         crown.position.set(
             (Math.random()-.5)*1.3,
             4+i*1.3,
             (Math.random()-.5)*1.3
         );
 
+        crown.castShadow = true;
 
-        crown.castShadow =
-            true;
-
-
-        tree.add(
-            crown
-        );
+        tree.add(crown);
 
     }
 
-
-    scene.add(
-        tree
-    );
+    scene.add(tree);
 
 }
 
@@ -2363,27 +2079,17 @@ function createTree(
    BENCH
 ========================================================= */
 
-function createBench(
-    x,
-    z
-){
+function createBench(x,z){
 
     const group =
         new THREE.Group();
 
-
-    group.position.set(
-        x,
-        0,
-        z
-    );
-
+    group.position.set(x,0,z);
 
     const wood =
         new THREE.MeshStandardMaterial({
             color:0x6c4a2f
         });
-
 
     const seat =
         new THREE.Mesh(
@@ -2395,15 +2101,9 @@ function createBench(
             wood
         );
 
+    seat.position.y = 1.1;
 
-    seat.position.y =
-        1.1;
-
-
-    group.add(
-        seat
-    );
-
+    group.add(seat);
 
     const back =
         new THREE.Mesh(
@@ -2415,22 +2115,15 @@ function createBench(
             wood
         );
 
-
     back.position.set(
         0,
         1.55,
         -.3
     );
 
+    group.add(back);
 
-    group.add(
-        back
-    );
-
-
-    scene.add(
-        group
-    );
+    scene.add(group);
 
 }
 
@@ -2444,15 +2137,11 @@ function createPlayer(){
     playerGroup =
         new THREE.Group();
 
-
     playerGroup.position.set(
         0,
         0,
         -65
     );
-
-
-    /* CUERPO */
 
     const body =
         new THREE.Mesh(
@@ -2468,21 +2157,12 @@ function createPlayer(){
             })
         );
 
+    body.position.y = 1.2;
 
-    body.position.y =
-        1.2;
+    body.castShadow = true;
 
+    playerGroup.add(body);
 
-    body.castShadow =
-        true;
-
-
-    playerGroup.add(
-        body
-    );
-
-
-    /* CABEZA */
 
     const head =
         new THREE.Mesh(
@@ -2497,53 +2177,93 @@ function createPlayer(){
             })
         );
 
+    head.position.y = 2.4;
 
-    head.position.y =
-        2.4;
+    head.castShadow = true;
 
-
-    head.castShadow =
-        true;
+    playerGroup.add(head);
 
 
-    playerGroup.add(
-        head
+    const faceMaterial =
+        new THREE.MeshStandardMaterial({
+            color:0x241b17,
+            roughness:.7
+        });
+
+    const eyeLeft =
+        new THREE.Mesh(
+            new THREE.SphereGeometry(
+                .075,
+                10,
+                10
+            ),
+            faceMaterial
+        );
+
+    eyeLeft.position.set(
+        -.17,
+        2.48,
+        .44
     );
 
-    /* CARITA */
-    const faceMaterial = new THREE.MeshStandardMaterial({
-        color:0x241b17,
-        roughness:.7
-    });
-
-    const eyeLeft = new THREE.Mesh(
-        new THREE.SphereGeometry(.075,10,10),
-        faceMaterial
-    );
-    eyeLeft.position.set(-.17,2.48,.44);
     playerGroup.add(eyeLeft);
 
-    const eyeRight = eyeLeft.clone();
+    const eyeRight =
+        eyeLeft.clone();
+
     eyeRight.position.x = .17;
+
     playerGroup.add(eyeRight);
 
-    const nose = new THREE.Mesh(
-        new THREE.SphereGeometry(.045,8,8),
-        new THREE.MeshStandardMaterial({color:0xb9785b,roughness:.8})
+
+    const nose =
+        new THREE.Mesh(
+            new THREE.SphereGeometry(
+                .045,
+                8,
+                8
+            ),
+            new THREE.MeshStandardMaterial({
+                color:0xb9785b,
+                roughness:.8
+            })
+        );
+
+    nose.position.set(
+        0,
+        2.34,
+        .48
     );
-    nose.position.set(0,2.34,.48);
+
     playerGroup.add(nose);
 
-    const mouth = new THREE.Mesh(
-        new THREE.TorusGeometry(.12,.025,6,16,Math.PI),
-        faceMaterial
+
+    const mouth =
+        new THREE.Mesh(
+            new THREE.TorusGeometry(
+                .12,
+                .025,
+                6,
+                16,
+                Math.PI
+            ),
+            faceMaterial
+        );
+
+    mouth.rotation.x =
+        Math.PI / 2;
+
+    mouth.rotation.z =
+        Math.PI;
+
+    mouth.position.set(
+        0,
+        2.22,
+        .47
     );
-    mouth.rotation.x = Math.PI / 2;
-    mouth.rotation.z = Math.PI;
-    mouth.position.set(0,2.22,.47);
+
     playerGroup.add(mouth);
 
-    /* MARCADOR */
 
     const marker =
         new THREE.Mesh(
@@ -2557,27 +2277,16 @@ function createPlayer(){
             })
         );
 
-
-    marker.position.y =
-        3.3;
-
+    marker.position.y = 3.3;
 
     marker.rotation.x =
         Math.PI;
 
+    playerGroup.add(marker);
 
-    playerGroup.add(
-        marker
-    );
+    scene.add(playerGroup);
 
-
-    scene.add(
-        playerGroup
-    );
-
-
-    player =
-        playerGroup;
+    player = playerGroup;
 
 }
 
@@ -2588,45 +2297,26 @@ function createPlayer(){
 
 function createNPCs(){
 
-    for(
-        let i=0;
-        i<18;
-        i++
-    ){
+    for(let i=0;i<18;i++){
 
         const npc =
             createNPC();
 
-
         npc.position.set(
-            -80 +
-            Math.random()*160,
-
+            -80 + Math.random()*160,
             0,
-
-            -60 +
-            Math.random()*120
+            -60 + Math.random()*120
         );
-
 
         npc.userData.direction =
-            Math.random() *
-            Math.PI * 2;
-
+            Math.random()*Math.PI*2;
 
         npc.userData.speed =
-            .8 +
-            Math.random()*.7;
+            .8 + Math.random()*.7;
 
+        scene.add(npc);
 
-        scene.add(
-            npc
-        );
-
-
-        npcs.push(
-            npc
-        );
+        npcs.push(npc);
 
     }
 
@@ -2638,7 +2328,6 @@ function createNPC(){
     const group =
         new THREE.Group();
 
-
     const colors = [
         0xd2a67b,
         0x8eaf9a,
@@ -2646,7 +2335,6 @@ function createNPC(){
         0xb0a47c,
         0x7894a8
     ];
-
 
     const body =
         new THREE.Mesh(
@@ -2660,27 +2348,17 @@ function createNPC(){
                 color:
                     colors[
                         Math.floor(
-                            Math.random() *
-                            colors.length
+                            Math.random()*colors.length
                         )
                     ],
                 roughness:.9
             })
         );
 
+    body.position.y = .9;
+    body.castShadow = true;
 
-    body.position.y =
-        .9;
-
-
-    body.castShadow =
-        true;
-
-
-    group.add(
-        body
-    );
-
+    group.add(body);
 
     const head =
         new THREE.Mesh(
@@ -2695,19 +2373,10 @@ function createNPC(){
             })
         );
 
+    head.position.y = 1.8;
+    head.castShadow = true;
 
-    head.position.y =
-        1.8;
-
-
-    head.castShadow =
-        true;
-
-
-    group.add(
-        head
-    );
-
+    group.add(head);
 
     return group;
 
@@ -2720,144 +2389,72 @@ function createNPC(){
 
 function updatePlayer(delta){
 
-    if(
-        routeMoving
-    ){
+    if(routeMoving){
 
-        updateRoute(
-            delta
-        );
+        updateRoute(delta);
 
         return;
-
     }
-
 
     let dx = 0;
     let dz = 0;
 
-
-    if(
-        keys["w"] ||
-        keys["arrowup"]
-    ){
-
+    if(keys["w"] || keys["arrowup"]){
         dz -= 1;
-
     }
 
-
-    if(
-        keys["s"] ||
-        keys["arrowdown"]
-    ){
-
+    if(keys["s"] || keys["arrowdown"]){
         dz += 1;
-
     }
 
-
-    if(
-        keys["a"] ||
-        keys["arrowleft"]
-    ){
-
+    if(keys["a"] || keys["arrowleft"]){
         dx -= 1;
-
     }
 
-
-    if(
-        keys["d"] ||
-        keys["arrowright"]
-    ){
-
+    if(keys["d"] || keys["arrowright"]){
         dx += 1;
-
     }
 
-
-    if(
-        dx===0 &&
-        dz===0
-    ){
-
+    if(dx===0 && dz===0){
         return;
-
     }
-
 
     const length =
-        Math.sqrt(
-            dx*dx +
-            dz*dz
-        );
-
+        Math.sqrt(dx*dx + dz*dz);
 
     dx /= length;
     dz /= length;
 
-
     const speed =
         10 * delta;
-
 
     movePlayer(
         dx*speed,
         dz*speed
     );
 
-
     player.rotation.y =
-        Math.atan2(
-            dx,
-            dz
-        );
-
+        Math.atan2(dx,dz);
 
     updateLocation();
 
 }
 
 
-function movePlayer(
-    dx,
-    dz
-){
+function movePlayer(dx,dz){
 
     const newX =
-        player.position.x +
-        dx;
-
+        player.position.x + dx;
 
     const newZ =
-        player.position.z +
-        dz;
+        player.position.z + dz;
 
-
-    if(
-        !isBlocked(
-            newX,
-            player.position.z
-        )
-    ){
-
-        player.position.x =
-            newX;
-
+    if(!isBlocked(newX,player.position.z)){
+        player.position.x = newX;
     }
 
-
-    if(
-        !isBlocked(
-            player.position.x,
-            newZ
-        )
-    ){
-
-        player.position.z =
-            newZ;
-
+    if(!isBlocked(player.position.x,newZ)){
+        player.position.z = newZ;
     }
 
 }
@@ -2867,10 +2464,7 @@ function movePlayer(
    COLISIONES
 ========================================================= */
 
-function isBlocked(
-    x,
-    z
-){
+function isBlocked(x,z){
 
     if(
         x < -98 ||
@@ -2878,9 +2472,7 @@ function isBlocked(
         z < -78 ||
         z > 78
     ){
-
         return true;
-
     }
 
 
@@ -2890,57 +2482,37 @@ function isBlocked(
         ((x/43)*(x/43)) +
         ((z/22)*(z/22));
 
-
-    if(
-        lake < .78
-    ){
-
+    if(lake < .78){
         return true;
-
     }
 
 
-    /* EDIFICIOS */
+    /* EDIFICIOS Y PILETA */
 
-    for(
-        const obstacle
-        of obstacles
-    ){
+    for(const obstacle of obstacles){
 
         if(
-            obstacle.type !==
-            "building"
+            obstacle.type !== "building" &&
+            obstacle.type !== "pool"
         ){
-
             continue;
-
         }
 
-
         if(
-            Math.abs(
-                x -
-                obstacle.x
-            )
+            Math.abs(x-obstacle.x)
             <
             obstacle.w/2 + 1.3
 
             &&
 
-            Math.abs(
-                z -
-                obstacle.z
-            )
+            Math.abs(z-obstacle.z)
             <
             obstacle.d/2 + 1.3
         ){
-
             return true;
-
         }
 
     }
-
 
     return false;
 
@@ -2951,64 +2523,44 @@ function isBlocked(
    NPC MOVEMENT
 ========================================================= */
 
-function updateNPCs(
-    delta
-){
+function updateNPCs(delta){
 
-    npcs.forEach(
-        function(npc){
+    npcs.forEach(function(npc){
 
-            const dir =
-                npc.userData.direction;
+        const dir =
+            npc.userData.direction;
 
+        const speed =
+            npc.userData.speed;
 
-            const speed =
-                npc.userData.speed;
+        const nx =
+            npc.position.x +
+            Math.cos(dir) *
+            speed *
+            delta;
 
+        const nz =
+            npc.position.z +
+            Math.sin(dir) *
+            speed *
+            delta;
 
-            const nx =
-                npc.position.x +
-                Math.cos(dir) *
-                speed *
-                delta;
+        if(!isBlocked(nx,nz)){
 
+            npc.position.x = nx;
+            npc.position.z = nz;
 
-            const nz =
-                npc.position.z +
-                Math.sin(dir) *
-                speed *
-                delta;
+        }else{
 
-
-            if(
-                !isBlocked(
-                    nx,
-                    nz
-                )
-            ){
-
-                npc.position.x =
-                    nx;
-
-                npc.position.z =
-                    nz;
-
-            }
-            else{
-
-                npc.userData.direction +=
-                    Math.PI *
-                    (.5 +
-                    Math.random());
-
-            }
-
-
-            npc.rotation.y =
-                -dir;
+            npc.userData.direction +=
+                Math.PI *
+                (.5 + Math.random());
 
         }
-    );
+
+        npc.rotation.y = -dir;
+
+    });
 
 }
 
@@ -3020,63 +2572,44 @@ function updateNPCs(
 function createBusinessList(){
 
     const container =
-        document.getElementById(
-            "business-list"
+        document.getElementById("business-list");
+
+    businessData.forEach(function(data){
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "business-item";
+
+        item.dataset.name =
+            data.name.toLowerCase();
+
+        item.dataset.id =
+            data.id;
+
+        item.innerHTML = `
+            <div class="business-name">
+                ${data.name}
+            </div>
+
+            <div class="business-category">
+                ${data.category}
+            </div>
+        `;
+
+        item.addEventListener(
+            "click",
+            function(){
+
+                selectBusiness(data);
+
+            }
         );
 
+        container.appendChild(item);
 
-    businessData.forEach(
-        function(data){
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "business-item";
-
-
-            item.dataset.name =
-                data.name.toLowerCase();
-
-
-            item.dataset.id =
-                data.id;
-
-
-            item.innerHTML = `
-
-                <div class="business-name">
-                    ${data.name}
-                </div>
-
-                <div class="business-category">
-                    ${data.category}
-                </div>
-
-            `;
-
-
-            item.addEventListener(
-                "click",
-                function(){
-
-                    selectBusiness(
-                        data
-                    );
-
-                }
-            );
-
-
-            container.appendChild(
-                item
-            );
-
-        }
-    );
+    });
 
 }
 
@@ -3085,86 +2618,48 @@ function createBusinessList(){
    SELECT BUSINESS
 ========================================================= */
 
-function selectBusiness(
-    data
-){
+function selectBusiness(data){
 
-    selectedBusiness =
-        data;
-
+    selectedBusiness = data;
 
     selectedBuilding =
-        buildings.find(
-            function(building){
+        buildings.find(function(building){
 
-                return (
-                    building
-                        .userData
-                        .business
-                        .id
-                    ===
-                    data.id
-                );
+            return (
+                building.userData.business.id ===
+                data.id
+            );
 
-            }
-        );
+        });
 
+    highlightBuilding(selectedBuilding);
 
-    highlightBuilding(
-        selectedBuilding
-    );
-
-
-    document.getElementById(
-        "info-category"
-    ).textContent =
+    document.getElementById("info-category").textContent =
         data.category;
 
-
-    document.getElementById(
-        "info-title"
-    ).textContent =
+    document.getElementById("info-title").textContent =
         data.name;
 
-
-    document.getElementById(
-        "info-description"
-    ).textContent =
+    document.getElementById("info-description").textContent =
         data.description;
 
+    document.getElementById("info").classList.add("open");
 
-    document.getElementById(
-        "info"
-    ).classList.add(
-        "open"
-    );
-
-
-    document.getElementById(
-        "route-button"
-    ).onclick =
+    document.getElementById("route-button").onclick =
         function(){
 
-            startRoute(
-                data
-            );
+            startRoute(data);
 
         };
 
 
     document
-        .querySelectorAll(
-            ".business-item"
-        )
-        .forEach(
-            function(item){
+        .querySelectorAll(".business-item")
+        .forEach(function(item){
 
-                item.classList.remove(
-                    "active"
-                );
+            item.classList.remove("active");
 
-            }
-        );
+        });
 
 
     const active =
@@ -3174,19 +2669,12 @@ function selectBusiness(
             '"]'
         );
 
-
     if(active){
-
-        active.classList.add(
-            "active"
-        );
-
+        active.classList.add("active");
     }
 
-
     toast(
-        data.name +
-        " seleccionado"
+        data.name + " seleccionado"
     );
 
 }
@@ -3196,36 +2684,21 @@ function selectBusiness(
    HIGHLIGHT
 ========================================================= */
 
-function highlightBuilding(
-    building
-){
+function highlightBuilding(building){
 
-    buildings.forEach(
-        function(b){
-
-            const mesh =
-                b.userData
-                    .clickMesh;
-
-
-            mesh.scale.set(
-                1,
-                1,
-                1
-            );
-
-        }
-    );
-
-
-    if(
-        building
-    ){
+    buildings.forEach(function(b){
 
         const mesh =
-            building.userData
-                .clickMesh;
+            b.userData.clickMesh;
 
+        mesh.scale.set(1,1,1);
+
+    });
+
+    if(building){
+
+        const mesh =
+            building.userData.clickMesh;
 
         mesh.scale.set(
             1.06,
@@ -3245,25 +2718,13 @@ function highlightBuilding(
 function closeInfo(){
 
     document
-        .getElementById(
-            "info"
-        )
-        .classList.remove(
-            "open"
-        );
+        .getElementById("info")
+        .classList.remove("open");
 
+    selectedBusiness = null;
+    selectedBuilding = null;
 
-    selectedBusiness =
-        null;
-
-
-    selectedBuilding =
-        null;
-
-
-    highlightBuilding(
-        null
-    );
+    highlightBuilding(null);
 
 }
 
@@ -3272,61 +2733,41 @@ function closeInfo(){
    ROUTE
 ========================================================= */
 
-function startRoute(
-    data
-){
+function startRoute(data){
 
     cancelRoute();
-
 
     const start =
         new THREE.Vector3(
             player.position.x,
-            .35,
+            .5,
             player.position.z
         );
-
 
     const end =
         new THREE.Vector3(
             data.routeX,
-            .35,
+            .5,
             data.routeZ
         );
 
-
     routePoints =
-        createRoute(
-            start,
-            end
-        );
+        createRoute(start,end);
 
-
-    if(
-        routePoints.length === 0
-    ){
+    if(routePoints.length === 0){
 
         toast(
             "No se pudo encontrar una ruta."
         );
 
         return;
-
     }
 
+    drawRoute(routePoints);
 
-    drawRoute(
-        routePoints
-    );
+    routeIndex = 0;
 
-
-    routeIndex =
-        0;
-
-
-    routeMoving =
-        true;
-
+    routeMoving = true;
 
     toast(
         "Ruta hacia " +
@@ -3337,131 +2778,309 @@ function startRoute(
 
 
 /* =========================================================
-   ROUTE
+   RUTA INTELIGENTE
 ========================================================= */
 
-function createRoute(
-    start,
-    end
-){
+function createRoute(start,end){
 
-    const points = [];
+    /*
+        Primero intenta ruta directa.
+    */
 
-    const steps = 50;
+    if(isLineSafe(start,end)){
 
-
-    for(
-        let i=0;
-        i<=steps;
-        i++
-    ){
-
-        const t =
-            i / steps;
-
-
-        const x =
-            start.x +
-            (end.x-start.x) *
-            t;
-
-
-        const z =
-            start.z +
-            (end.z-start.z) *
-            t;
-
-
-        points.push(
-            new THREE.Vector3(
-                x,
-                .5,
-                z
-            )
+        return interpolateRoute(
+            start,
+            end
         );
 
     }
 
 
-    for(
-        const point
-        of points
-    ){
+    /*
+        Si está bloqueada, genera varias
+        alternativas alrededor de la laguna.
+    */
 
-        const lake =
-            ((point.x/43) *
-             (point.x/43))
-            +
-            ((point.z/22) *
-             (point.z/22));
+    const candidates = [];
 
 
-        if(
-            lake < .9
-        ){
+    /* CAMINO NORTE */
 
-            return createSafeRoute(
-                start,
-                end
-            );
+    candidates.push([
+        start,
+        new THREE.Vector3(
+            start.x,
+            .5,
+            -37
+        ),
+        new THREE.Vector3(
+            end.x,
+            .5,
+            -37
+        ),
+        end
+    ]);
+
+
+    /* CAMINO SUR */
+
+    candidates.push([
+        start,
+        new THREE.Vector3(
+            start.x,
+            .5,
+            37
+        ),
+        new THREE.Vector3(
+            end.x,
+            .5,
+            37
+        ),
+        end
+    ]);
+
+
+    /* CAMINO ESTE */
+
+    candidates.push([
+        start,
+        new THREE.Vector3(
+            55,
+            .5,
+            start.z
+        ),
+        new THREE.Vector3(
+            55,
+            .5,
+            end.z
+        ),
+        end
+    ]);
+
+
+    /* CAMINO OESTE */
+
+    candidates.push([
+        start,
+        new THREE.Vector3(
+            -55,
+            .5,
+            start.z
+        ),
+        new THREE.Vector3(
+            -55,
+            .5,
+            end.z
+        ),
+        end
+    ]);
+
+
+    let bestRoute = null;
+    let bestDistance = Infinity;
+
+
+    candidates.forEach(function(candidate){
+
+        let valid = true;
+        let total = 0;
+
+        for(let i=1;i<candidate.length;i++){
+
+            const a = candidate[i-1];
+            const b = candidate[i];
+
+            if(!isLineSafe(a,b)){
+
+                valid = false;
+                break;
+
+            }
+
+            total +=
+                a.distanceTo(b);
 
         }
 
 
-        if(
-            isBuildingBlocked(
-                point.x,
-                point.z
-            )
-        ){
+        if(valid && total < bestDistance){
 
-            return createSafeRoute(
-                start,
-                end
-            );
+            bestDistance = total;
+            bestRoute = candidate;
+
+        }
+
+    });
+
+
+    if(!bestRoute){
+
+        return [];
+
+    }
+
+
+    return smoothRoute(bestRoute);
+
+}
+
+
+/* =========================================================
+   VERIFICAR SEGMENTO
+========================================================= */
+
+function isLineSafe(start,end){
+
+    const distance =
+        start.distanceTo(end);
+
+    const steps =
+        Math.max(
+            2,
+            Math.ceil(distance / 1.5)
+        );
+
+    for(let i=0;i<=steps;i++){
+
+        const t =
+            i / steps;
+
+        const x =
+            start.x +
+            (end.x-start.x)*t;
+
+        const z =
+            start.z +
+            (end.z-start.z)*t;
+
+
+        /*
+            No entrar en la laguna.
+        */
+
+        const lake =
+            ((x/43)*(x/43)) +
+            ((z/22)*(z/22));
+
+        if(lake < .88){
+
+            return false;
+
+        }
+
+
+        /*
+            No atravesar edificios
+            ni pileta.
+        */
+
+        if(isBuildingBlocked(x,z)){
+
+            return false;
 
         }
 
     }
 
+    return true;
+
+}
+
+
+/* =========================================================
+   INTERPOLAR RUTA
+========================================================= */
+
+function interpolateRoute(start,end){
+
+    const points = [];
+
+    const distance =
+        start.distanceTo(end);
+
+    const steps =
+        Math.max(
+            2,
+            Math.ceil(distance / 1.5)
+        );
+
+    for(let i=0;i<=steps;i++){
+
+        const t =
+            i/steps;
+
+        points.push(
+            new THREE.Vector3(
+                start.x +
+                (end.x-start.x)*t,
+
+                .5,
+
+                start.z +
+                (end.z-start.z)*t
+            )
+        );
+
+    }
 
     return points;
 
 }
 
 
-function isBuildingBlocked(
-    x,
-    z
-){
+/* =========================================================
+   SUAVIZAR RUTA
+========================================================= */
 
-    for(
-        const obstacle
-        of obstacles
-    ){
+function smoothRoute(waypoints){
 
-        if(
-            obstacle.type !==
-            "building"
-        ){
+    const points = [];
 
-            continue;
+    for(let i=0;i<waypoints.length-1;i++){
 
+        const segment =
+            interpolateRoute(
+                waypoints[i],
+                waypoints[i+1]
+            );
+
+        if(i > 0){
+            segment.shift();
         }
 
+        points.push(...segment);
+
+    }
+
+    return points;
+
+}
+
+
+/* =========================================================
+   BUILDING BLOCK
+========================================================= */
+
+function isBuildingBlocked(x,z){
+
+    for(const obstacle of obstacles){
 
         if(
-            Math.abs(
-                x-obstacle.x
-            )
+            obstacle.type !== "building" &&
+            obstacle.type !== "pool"
+        ){
+            continue;
+        }
+
+        if(
+            Math.abs(x-obstacle.x)
             <
             obstacle.w/2 + .5
 
             &&
 
-            Math.abs(
-                z-obstacle.z
-            )
+            Math.abs(z-obstacle.z)
             <
             obstacle.d/2 + .5
         ){
@@ -3472,154 +3091,7 @@ function isBuildingBlocked(
 
     }
 
-
     return false;
-
-}
-
-
-function createSafeRoute(
-    start,
-    end
-){
-
-    const points = [];
-
-
-    let sideX =
-        start.x < 0
-        ? -52
-        : 52;
-
-
-    const bottom =
-        34;
-
-
-    const waypoints = [
-
-        new THREE.Vector3(
-            start.x,
-            .5,
-            start.z
-        ),
-
-        new THREE.Vector3(
-            sideX,
-            .5,
-            start.z
-        ),
-
-        new THREE.Vector3(
-            sideX,
-            .5,
-            bottom
-        ),
-
-        new THREE.Vector3(
-            end.x,
-            .5,
-            bottom
-        ),
-
-        new THREE.Vector3(
-            end.x,
-            .5,
-            end.z
-        )
-
-    ];
-
-
-    for(
-        let index=0;
-        index<waypoints.length;
-        index++
-    ){
-
-        const current =
-            waypoints[index];
-
-
-        if(index===0){
-
-            points.push(
-                current.clone()
-            );
-
-            continue;
-
-        }
-
-
-        const previous =
-            waypoints[
-                index-1
-            ];
-
-
-        const distance =
-            previous.distanceTo(
-                current
-            );
-
-
-        const steps =
-            Math.max(
-                2,
-                Math.ceil(
-                    distance / 2
-                )
-            );
-
-
-        for(
-            let i=1;
-            i<=steps;
-            i++
-        ){
-
-            const t =
-                i/steps;
-
-
-            const point =
-                new THREE.Vector3(
-                    previous.x +
-                    (
-                        current.x -
-                        previous.x
-                    ) * t,
-
-                    .5,
-
-                    previous.z +
-                    (
-                        current.z -
-                        previous.z
-                    ) * t
-                );
-
-
-            if(
-                !isBlocked(
-                    point.x,
-                    point.z
-                )
-            ){
-
-                points.push(
-                    point
-                );
-
-            }
-
-        }
-
-    }
-
-
-    return points;
 
 }
 
@@ -3628,32 +3100,20 @@ function createSafeRoute(
    DRAW ROUTE
 ========================================================= */
 
-function drawRoute(
-    points
-){
+function drawRoute(points){
 
-    if(
-        routeLine
-    ){
+    if(routeLine){
 
-        scene.remove(
-            routeLine
-        );
-
+        scene.remove(routeLine);
 
         routeLine.geometry.dispose();
-
         routeLine.material.dispose();
 
     }
 
-
     const geometry =
         new THREE.BufferGeometry()
-            .setFromPoints(
-                points
-            );
-
+            .setFromPoints(points);
 
     const material =
         new THREE.LineDashedMaterial({
@@ -3666,20 +3126,15 @@ function drawRoute(
 
         });
 
-
     routeLine =
         new THREE.Line(
             geometry,
             material
         );
 
-
     routeLine.computeLineDistances();
 
-
-    scene.add(
-        routeLine
-    );
+    scene.add(routeLine);
 
 }
 
@@ -3688,18 +3143,11 @@ function drawRoute(
    ROUTE MOVEMENT
 ========================================================= */
 
-function updateRoute(
-    delta
-){
+function updateRoute(delta){
 
-    if(
-        routeIndex >=
-        routePoints.length
-    ){
+    if(routeIndex >= routePoints.length){
 
-        routeMoving =
-            false;
-
+        routeMoving = false;
 
         toast(
             "Llegaste a " +
@@ -3710,21 +3158,15 @@ function updateRoute(
             )
         );
 
-
         return;
 
     }
 
-
     const target =
-        routePoints[
-            routeIndex
-        ];
-
+        routePoints[routeIndex];
 
     const current =
         player.position;
-
 
     const direction =
         new THREE.Vector3()
@@ -3733,14 +3175,10 @@ function updateRoute(
                 current
             );
 
-
     const distance =
         direction.length();
 
-
-    if(
-        distance < .7
-    ){
+    if(distance < .7){
 
         routeIndex++;
 
@@ -3748,32 +3186,20 @@ function updateRoute(
 
     }
 
-
     direction.normalize();
-
 
     const speed =
         9 * delta;
 
-
     const nextX =
         current.x +
-        direction.x *
-        speed;
-
+        direction.x*speed;
 
     const nextZ =
         current.z +
-        direction.z *
-        speed;
+        direction.z*speed;
 
-
-    if(
-        !isBlocked(
-            nextX,
-            nextZ
-        )
-    ){
+    if(!isBlocked(nextX,nextZ)){
 
         player.position.x =
             nextX;
@@ -3781,29 +3207,21 @@ function updateRoute(
         player.position.z =
             nextZ;
 
-    }
-    else{
+    }else{
 
-        routeMoving =
-            false;
+        routeMoving = false;
 
-
-        toast(
-            "Ruta bloqueada"
-        );
-
+        toast("Ruta bloqueada");
 
         return;
 
     }
-
 
     player.rotation.y =
         Math.atan2(
             direction.x,
             direction.z
         );
-
 
     updateLocation();
 
@@ -3816,34 +3234,20 @@ function updateRoute(
 
 function cancelRoute(){
 
-    routeMoving =
-        false;
+    routeMoving = false;
 
+    routePoints = [];
 
-    routePoints =
-        [];
+    routeIndex = 0;
 
+    if(routeLine){
 
-    routeIndex =
-        0;
-
-
-    if(
-        routeLine
-    ){
-
-        scene.remove(
-            routeLine
-        );
-
+        scene.remove(routeLine);
 
         routeLine.geometry.dispose();
-
         routeLine.material.dispose();
 
-
-        routeLine =
-            null;
+        routeLine = null;
 
     }
 
@@ -3856,18 +3260,11 @@ function cancelRoute(){
 
 function updateCamera(){
 
-    if(
-        !player
-    ){
-
+    if(!player){
         return;
-
     }
 
-
-    if(
-        topView
-    ){
+    if(topView){
 
         targetCameraPosition.set(
             player.position.x,
@@ -3875,38 +3272,29 @@ function updateCamera(){
             player.position.z + .01
         );
 
-
         cameraTarget.set(
             player.position.x,
             0,
             player.position.z
         );
 
-    }
-    else{
+    }else{
 
         const x =
             player.position.x +
-            Math.sin(
-                cameraAngle
-            ) *
+            Math.sin(cameraAngle) *
             cameraDistance;
-
 
         const z =
             player.position.z +
-            Math.cos(
-                cameraAngle
-            ) *
+            Math.cos(cameraAngle) *
             cameraDistance;
-
 
         targetCameraPosition.set(
             x,
             cameraHeight,
             z
         );
-
 
         cameraTarget.set(
             player.position.x,
@@ -3916,41 +3304,25 @@ function updateCamera(){
 
     }
 
-
     camera.position.lerp(
         targetCameraPosition,
         .08
     );
 
-
-    camera.lookAt(
-        cameraTarget
-    );
+    camera.lookAt(cameraTarget);
 
 }
 
 
 function resetCamera(){
 
-    topView =
-        false;
+    topView = false;
 
+    cameraAngle = .7;
+    cameraDistance = 22;
+    cameraHeight = 10;
 
-    cameraAngle =
-        .7;
-
-
-    cameraDistance =
-        22;
-
-
-    cameraHeight =
-        10;
-
-
-    toast(
-        "Cámara reiniciada"
-    );
+    toast("Cámara reiniciada");
 
 }
 
@@ -3961,19 +3333,14 @@ function centerPlayer(){
         player.position
     );
 
-
-    toast(
-        "Ubicación centrada"
-    );
+    toast("Ubicación centrada");
 
 }
 
 
 function toggleTopView(){
 
-    topView =
-        !topView;
-
+    topView = !topView;
 
     toast(
         topView
@@ -3997,53 +3364,34 @@ function setupEvents(){
             const key =
                 event.key.toLowerCase();
 
+            keys[key] = true;
 
-            keys[key] =
-                true;
-
-
-            if(
-                [
-                    "w",
-                    "a",
-                    "s",
-                    "d",
-                    "arrowup",
-                    "arrowdown",
-                    "arrowleft",
-                    "arrowright"
-                ].includes(key)
-            ){
+            if([
+                "w",
+                "a",
+                "s",
+                "d",
+                "arrowup",
+                "arrowdown",
+                "arrowleft",
+                "arrowright"
+            ].includes(key)){
 
                 event.preventDefault();
 
             }
 
-
-            if(
-                key === "v"
-            ){
-
+            if(key === "v"){
                 toggleTopView();
-
             }
 
-
-            if(
-                key === "r"
-            ){
-
+            if(key === "r"){
                 resetCamera();
-
             }
 
-
-            if(
-                key === "escape"
-            ){
+            if(key === "escape"){
 
                 closeInfo();
-
                 cancelRoute();
 
             }
@@ -4058,8 +3406,7 @@ function setupEvents(){
 
             keys[
                 event.key.toLowerCase()
-            ] =
-                false;
+            ] = false;
 
         }
     );
@@ -4070,24 +3417,20 @@ function setupEvents(){
         onPointerDown
     );
 
-
     renderer.domElement.addEventListener(
         "pointermove",
         onPointerMove
     );
-
 
     renderer.domElement.addEventListener(
         "pointerup",
         onPointerUp
     );
 
-
     renderer.domElement.addEventListener(
         "pointercancel",
         onPointerUp
     );
-
 
     renderer.domElement.addEventListener(
         "wheel",
@@ -4099,9 +3442,7 @@ function setupEvents(){
 
 
     document
-        .getElementById(
-            "search"
-        )
+        .getElementById("search")
         .addEventListener(
             "input",
             filterBusinesses
@@ -4109,65 +3450,53 @@ function setupEvents(){
 
 
     document
-        .querySelectorAll(
-            ".mobile-btn"
-        )
-        .forEach(
-            function(button){
+        .querySelectorAll(".mobile-btn")
+        .forEach(function(button){
 
-                const key =
-                    button.dataset.key;
+            const key =
+                button.dataset.key;
 
+            button.addEventListener(
+                "pointerdown",
+                function(event){
 
-                button.addEventListener(
-                    "pointerdown",
-                    function(event){
+                    event.preventDefault();
 
-                        event.preventDefault();
+                    keys[key] = true;
 
-                        keys[key] =
-                            true;
+                }
+            );
 
-                    }
-                );
+            button.addEventListener(
+                "pointerup",
+                function(event){
 
+                    event.preventDefault();
 
-                button.addEventListener(
-                    "pointerup",
-                    function(event){
+                    keys[key] = false;
 
-                        event.preventDefault();
+                }
+            );
 
-                        keys[key] =
-                            false;
+            button.addEventListener(
+                "pointercancel",
+                function(){
 
-                    }
-                );
+                    keys[key] = false;
 
+                }
+            );
 
-                button.addEventListener(
-                    "pointercancel",
-                    function(){
+            button.addEventListener(
+                "pointerleave",
+                function(){
 
-                        keys[key] =
-                            false;
+                    keys[key] = false;
 
-                    }
-                );
+                }
+            );
 
-
-                button.addEventListener(
-                    "pointerleave",
-                    function(){
-
-                        keys[key] =
-                            false;
-
-                    }
-                );
-
-            }
-        );
+        });
 
 }
 
@@ -4176,21 +3505,14 @@ function setupEvents(){
    POINTER
 ========================================================= */
 
-function onPointerDown(
-    event
-){
+function onPointerDown(event){
 
-    mouseDown =
-        true;
+    mouseDown = true;
 
-
-    mouseMoved =
-        false;
-
+    mouseMoved = false;
 
     lastMouseX =
         event.clientX;
-
 
     lastMouseY =
         event.clientY;
@@ -4198,46 +3520,34 @@ function onPointerDown(
 }
 
 
-function onPointerMove(
-    event
-){
+function onPointerMove(event){
 
     const dx =
         event.clientX -
         lastMouseX;
 
-
     const dy =
         event.clientY -
         lastMouseY;
 
-
-    if(
-        mouseDown
-    ){
+    if(mouseDown){
 
         if(
             Math.abs(dx)>3 ||
             Math.abs(dy)>3
         ){
 
-            mouseMoved =
-                true;
+            mouseMoved = true;
 
         }
 
-
-        if(
-            !topView
-        ){
+        if(!topView){
 
             cameraAngle -=
                 dx*.005;
 
-
             cameraHeight +=
                 dy*.04;
-
 
             cameraHeight =
                 THREE.MathUtils.clamp(
@@ -4250,52 +3560,37 @@ function onPointerMove(
 
     }
 
-
     lastMouseX =
         event.clientX;
-
 
     lastMouseY =
         event.clientY;
 
-
-    updateHover(
-        event
-    );
+    updateHover(event);
 
 }
 
 
-function onPointerUp(
-    event
-){
+function onPointerUp(event){
 
     if(
         mouseDown &&
         !mouseMoved
     ){
 
-        clickObject(
-            event
-        );
+        clickObject(event);
 
     }
 
-
-    mouseDown =
-        false;
+    mouseDown = false;
 
 }
 
 
-function onWheel(
-    event
-){
+function onWheel(event){
 
     cameraDistance +=
-        event.deltaY *
-        .015;
-
+        event.deltaY*.015;
 
     cameraDistance =
         THREE.MathUtils.clamp(
@@ -4311,57 +3606,42 @@ function onWheel(
    RAYCAST
 ========================================================= */
 
-function updateMouse(
-    event
-){
+function updateMouse(event){
 
     const rect =
         renderer.domElement
             .getBoundingClientRect();
 
-
     mouse.x =
         (
-            (event.clientX -
-            rect.left) /
+            (event.clientX-rect.left) /
             rect.width
-        ) * 2 - 1;
-
+        )*2-1;
 
     mouse.y =
         -(
-            (event.clientY -
-            rect.top) /
+            (event.clientY-rect.top) /
             rect.height
-        ) * 2 + 1;
+        )*2+1;
 
 }
 
 
-function updateHover(
-    event
-){
+function updateHover(event){
 
-    updateMouse(
-        event
-    );
-
+    updateMouse(event);
 
     raycaster.setFromCamera(
         mouse,
         camera
     );
 
-
     const hits =
         raycaster.intersectObjects(
             buildingMeshes
         );
 
-
-    if(
-        hits.length
-    ){
+    if(hits.length){
 
         const building =
             hits[0]
@@ -4369,27 +3649,19 @@ function updateHover(
                 .userData
                 .building;
 
-
-        if(
-            building !==
-            hoveredBuilding
-        ){
+        if(building !== hoveredBuilding){
 
             hoveredBuilding =
                 building;
-
 
             renderer.domElement.style.cursor =
                 "pointer";
 
         }
 
-    }
-    else{
+    }else{
 
-        hoveredBuilding =
-            null;
-
+        hoveredBuilding = null;
 
         renderer.domElement.style.cursor =
             "default";
@@ -4399,35 +3671,23 @@ function updateHover(
 }
 
 
-function clickObject(
-    event
-){
+function clickObject(event){
 
-    updateMouse(
-        event
-    );
-
+    updateMouse(event);
 
     raycaster.setFromCamera(
         mouse,
         camera
     );
 
-
     const hits =
         raycaster.intersectObjects(
             buildingMeshes
         );
 
-
-    if(
-        !hits.length
-    ){
-
+    if(!hits.length){
         return;
-
     }
-
 
     const building =
         hits[0]
@@ -4435,10 +3695,7 @@ function clickObject(
             .userData
             .building;
 
-
-    if(
-        building
-    ){
+    if(building){
 
         selectBusiness(
             building.userData.business
@@ -4457,34 +3714,24 @@ function filterBusinesses(){
 
     const value =
         document
-            .getElementById(
-                "search"
-            )
+            .getElementById("search")
             .value
             .toLowerCase()
             .trim();
 
-
     document
-        .querySelectorAll(
-            ".business-item"
-        )
-        .forEach(
-            function(item){
+        .querySelectorAll(".business-item")
+        .forEach(function(item){
 
-                const name =
-                    item.dataset.name;
+            const name =
+                item.dataset.name;
 
+            item.style.display =
+                name.includes(value)
+                ? "block"
+                : "none";
 
-                item.style.display =
-                    name.includes(
-                        value
-                    )
-                    ? "block"
-                    : "none";
-
-            }
-        );
+        });
 
 }
 
@@ -4495,55 +3742,35 @@ function filterBusinesses(){
 
 function updateLocation(){
 
-    let closest =
-        null;
+    let closest = null;
 
+    let distance = Infinity;
 
-    let distance =
-        Infinity;
+    businessData.forEach(function(data){
 
+        const dx =
+            player.position.x -
+            data.x;
 
-    businessData.forEach(
-        function(data){
+        const dz =
+            player.position.z -
+            data.z;
 
-            const dx =
-                player.position.x -
-                data.x;
+        const d =
+            Math.sqrt(
+                dx*dx + dz*dz
+            );
 
+        if(d < distance){
 
-            const dz =
-                player.position.z -
-                data.z;
-
-
-            const d =
-                Math.sqrt(
-                    dx*dx +
-                    dz*dz
-                );
-
-
-            if(
-                d < distance
-            ){
-
-                distance =
-                    d;
-
-
-                closest =
-                    data;
-
-            }
+            distance = d;
+            closest = data;
 
         }
-    );
 
+    });
 
-    document.getElementById(
-        "location"
-    ).textContent =
-
+    document.getElementById("location").textContent =
         distance < 15
         ? closest.name
         : "Parque";
@@ -4555,41 +3782,28 @@ function updateLocation(){
    TOAST
 ========================================================= */
 
-function toast(
-    message
-){
+function toast(message){
 
     const element =
-        document.getElementById(
-            "toast"
-        );
+        document.getElementById("toast");
 
+    if(!element){
+        return;
+    }
 
     element.textContent =
         message;
 
+    element.classList.add("show");
 
-    element.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
+    clearTimeout(toastTimer);
 
     toastTimer =
-        setTimeout(
-            function(){
+        setTimeout(function(){
 
-                element.classList.remove(
-                    "show"
-                );
+            element.classList.remove("show");
 
-            },
-            1800
-        );
+        },1800);
 
 }
 
@@ -4600,34 +3814,22 @@ function toast(
 
 function updateMinimap(){
 
-    if(
-        !player
-    ){
-
+    if(!player){
         return;
-
     }
 
-
     const canvas =
-        document.getElementById(
-            "minimap"
-        );
+        document.getElementById("minimap");
 
+    if(!canvas){
+        return;
+    }
 
     const ctx =
-        canvas.getContext(
-            "2d"
-        );
+        canvas.getContext("2d");
 
-
-    const w =
-        canvas.width;
-
-
-    const h =
-        canvas.height;
-
+    const w = canvas.width;
+    const h = canvas.height;
 
     ctx.clearRect(
         0,
@@ -4636,10 +3838,8 @@ function updateMinimap(){
         h
     );
 
-
     ctx.fillStyle =
         "#355e3d";
-
 
     ctx.fillRect(
         0,
@@ -4651,20 +3851,14 @@ function updateMinimap(){
 
     function mapX(x){
 
-        return (
-            (x+105) /
-            210
-        ) * w;
+        return ((x+105)/210)*w;
 
     }
 
 
     function mapZ(z){
 
-        return (
-            (z+85) /
-            170
-        ) * h;
+        return ((z+85)/170)*h;
 
     }
 
@@ -4674,24 +3868,32 @@ function updateMinimap(){
     ctx.fillStyle =
         "#4e9296";
 
-
     ctx.beginPath();
-
 
     ctx.ellipse(
         mapX(0),
         mapZ(0),
-
         43/210*w,
         22/170*h,
-
         0,
         0,
         Math.PI*2
     );
 
-
     ctx.fill();
+
+
+    /* PILETA */
+
+    ctx.fillStyle =
+        "#48a8b5";
+
+    ctx.fillRect(
+        mapX(82)-8,
+        mapZ(-28)-5,
+        16,
+        10
+    );
 
 
     /* CAMINOS */
@@ -4699,123 +3901,84 @@ function updateMinimap(){
     ctx.strokeStyle =
         "rgba(230,220,190,.45)";
 
-
-    ctx.lineWidth =
-        4;
-
+    ctx.lineWidth = 4;
 
     ctx.beginPath();
-
 
     ctx.moveTo(
         mapX(-100),
         mapZ(0)
     );
 
-
     ctx.lineTo(
         mapX(100),
         mapZ(0)
     );
-
 
     ctx.moveTo(
         mapX(0),
         mapZ(-80)
     );
 
-
     ctx.lineTo(
         mapX(0),
         mapZ(80)
     );
-
 
     ctx.stroke();
 
 
     /* EDIFICIOS */
 
-    businessData.forEach(
-        function(data){
+    businessData.forEach(function(data){
 
-            ctx.fillStyle =
-                data ===
-                selectedBusiness
+        ctx.fillStyle =
+            data === selectedBusiness
+            ? "#ffe18b"
+            : "#d8d0a7";
 
-                ? "#ffe18b"
+        ctx.fillRect(
+            mapX(data.x)-3,
+            mapZ(data.z)-3,
+            6,
+            6
+        );
 
-                : "#d8d0a7";
-
-
-            ctx.fillRect(
-                mapX(data.x)-3,
-                mapZ(data.z)-3,
-                6,
-                6
-            );
-
-        }
-    );
+    });
 
 
     /* RUTA */
 
-    if(
-        routePoints.length
-    ){
+    if(routePoints.length){
 
         ctx.strokeStyle =
             "#ffe18b";
 
-
-        ctx.lineWidth =
-            2;
-
+        ctx.lineWidth = 2;
 
         ctx.beginPath();
 
-
         routePoints.forEach(
-            function(
-                point,
-                index
-            ){
+            function(point,index){
 
                 const x =
-                    mapX(
-                        point.x
-                    );
-
+                    mapX(point.x);
 
                 const z =
-                    mapZ(
-                        point.z
-                    );
+                    mapZ(point.z);
 
+                if(index===0){
 
-                if(
-                    index === 0
-                ){
+                    ctx.moveTo(x,z);
 
-                    ctx.moveTo(
-                        x,
-                        z
-                    );
+                }else{
 
-                }
-                else{
-
-                    ctx.lineTo(
-                        x,
-                        z
-                    );
+                    ctx.lineTo(x,z);
 
                 }
 
             }
         );
-
 
         ctx.stroke();
 
@@ -4827,22 +3990,15 @@ function updateMinimap(){
     ctx.fillStyle =
         "#ffffff";
 
-
     ctx.beginPath();
 
-
     ctx.arc(
-        mapX(
-            player.position.x
-        ),
-        mapZ(
-            player.position.z
-        ),
+        mapX(player.position.x),
+        mapZ(player.position.z),
         5,
         0,
         Math.PI*2
     );
-
 
     ctx.fill();
 
@@ -4855,10 +4011,7 @@ function updateMinimap(){
 
 function animate(){
 
-    requestAnimationFrame(
-        animate
-    );
-
+    requestAnimationFrame(animate);
 
     const delta =
         Math.min(
@@ -4866,58 +4019,56 @@ function animate(){
             .05
         );
 
-
-    waterTime +=
-        delta;
+    waterTime += delta;
 
 
-    /* AGUA */
+    /* AGUA LAGUNA */
 
-    if(
-        water
-    ){
+    if(water){
 
         water.position.y =
             .13 +
             Math.sin(
-                waterTime * 1.4
-            ) * .025;
-
+                waterTime*1.4
+            )*.025;
 
         water.rotation.z =
             Math.sin(
-                waterTime * .15
-            ) * .008;
+                waterTime*.15
+            )*.008;
 
     }
 
 
-    updatePlayer(
-        delta
-    );
+    /* AGUA PILETA */
+
+    if(poolWater){
+
+        poolWater.position.y =
+            .4 +
+            Math.sin(
+                waterTime*1.7
+            )*.012;
+
+    }
 
 
-    updateNPCs(
-        delta
-    );
+    updatePlayer(delta);
 
+    updateNPCs(delta);
 
     updateCamera();
 
 
-    if(
-        routeLine
-    ){
+    if(routeLine){
 
-        routeLine.material
-            .dashOffset -=
+        routeLine.material.dashOffset -=
             delta*.8;
 
     }
 
 
     updateMinimap();
-
 
     renderer.render(
         scene,
@@ -4933,23 +4084,15 @@ function animate(){
 
 function onResize(){
 
-    if(
-        !camera ||
-        !renderer
-    ){
-
+    if(!camera || !renderer){
         return;
-
     }
-
 
     camera.aspect =
         window.innerWidth /
         window.innerHeight;
 
-
     camera.updateProjectionMatrix();
-
 
     renderer.setSize(
         window.innerWidth,
@@ -4958,54 +4101,206 @@ function onResize(){
 
 }
 
-/* =========================================================
-   MOBILE UX PRO
-========================================================= */
-(function(){
-    const panel = document.getElementById("search-panel");
-    const toggle = document.getElementById("mobile-search-toggle");
-    const backdrop = document.getElementById("search-backdrop");
 
-    function closeMobileSearch(){
-        panel.classList.remove("mobile-open");
-        backdrop.classList.remove("mobile-open");
-        toggle.textContent = "⌕";
+/* =========================================================
+   MOBILE UX
+========================================================= */
+
+(function(){
+
+    const panel =
+        document.getElementById(
+            "search-panel"
+        );
+
+    const toggle =
+        document.getElementById(
+            "mobile-search-toggle"
+        );
+
+    const backdrop =
+        document.getElementById(
+            "search-backdrop"
+        );
+
+
+    if(!panel || !toggle || !backdrop){
+        return;
     }
 
-    toggle.addEventListener("click",function(){
-        const open = !panel.classList.contains("mobile-open");
-        panel.classList.toggle("mobile-open",open);
-        backdrop.classList.toggle("mobile-open",open);
-        toggle.textContent = open ? "×" : "⌕";
-    });
 
-    backdrop.addEventListener("click",closeMobileSearch);
+    function closeMobileSearch(){
 
-    document.querySelectorAll(".business-item").forEach(function(item){
-        item.addEventListener("click",function(){
-            if(window.innerWidth <= 700){
-                setTimeout(closeMobileSearch,180);
-            }
+        panel.classList.remove(
+            "mobile-open"
+        );
+
+        backdrop.classList.remove(
+            "mobile-open"
+        );
+
+        toggle.textContent = "⌕";
+
+    }
+
+
+    toggle.addEventListener(
+        "click",
+        function(){
+
+            const open =
+                !panel.classList.contains(
+                    "mobile-open"
+                );
+
+            panel.classList.toggle(
+                "mobile-open",
+                open
+            );
+
+            backdrop.classList.toggle(
+                "mobile-open",
+                open
+            );
+
+            toggle.textContent =
+                open ? "×" : "⌕";
+
+        }
+    );
+
+
+    backdrop.addEventListener(
+        "click",
+        closeMobileSearch
+    );
+
+
+    document
+        .querySelectorAll(".business-item")
+        .forEach(function(item){
+
+            item.addEventListener(
+                "click",
+                function(){
+
+                    if(window.innerWidth <= 700){
+
+                        setTimeout(
+                            closeMobileSearch,
+                            180
+                        );
+
+                    }
+
+                }
+            );
+
         });
-    });
 
-    document.getElementById("mobile-center").addEventListener("click",centerPlayer);
-    document.getElementById("mobile-view").addEventListener("click",toggleTopView);
-    document.getElementById("mobile-zoom-in").addEventListener("click",function(){
-        cameraDistance=Math.max(8,cameraDistance-4);
-        toast("Vista acercada");
-    });
-    document.getElementById("mobile-zoom-out").addEventListener("click",function(){
-        cameraDistance=Math.min(45,cameraDistance+4);
-        toast("Vista alejada");
-    });
 
-    window.addEventListener("blur",function(){
-        Object.keys(keys).forEach(function(key){ keys[key]=false; });
-    });
+    const center =
+        document.getElementById(
+            "mobile-center"
+        );
+
+    if(center){
+
+        center.addEventListener(
+            "click",
+            centerPlayer
+        );
+
+    }
+
+
+    const view =
+        document.getElementById(
+            "mobile-view"
+        );
+
+    if(view){
+
+        view.addEventListener(
+            "click",
+            toggleTopView
+        );
+
+    }
+
+
+    const zoomIn =
+        document.getElementById(
+            "mobile-zoom-in"
+        );
+
+    if(zoomIn){
+
+        zoomIn.addEventListener(
+            "click",
+            function(){
+
+                cameraDistance =
+                    Math.max(
+                        8,
+                        cameraDistance-4
+                    );
+
+                toast(
+                    "Vista acercada"
+                );
+
+            }
+        );
+
+    }
+
+
+    const zoomOut =
+        document.getElementById(
+            "mobile-zoom-out"
+        );
+
+    if(zoomOut){
+
+        zoomOut.addEventListener(
+            "click",
+            function(){
+
+                cameraDistance =
+                    Math.min(
+                        45,
+                        cameraDistance+4
+                    );
+
+                toast(
+                    "Vista alejada"
+                );
+
+            }
+        );
+
+    }
+
+
+    window.addEventListener(
+        "blur",
+        function(){
+
+            Object.keys(keys)
+                .forEach(function(key){
+
+                    keys[key] = false;
+
+                });
+
+        }
+    );
+
 })();
 
 </script>
+
 
 </body>
 </html>
