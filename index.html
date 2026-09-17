@@ -15,7 +15,6 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -361,7 +360,7 @@ canvas{
 }
 
 /* =========================
-   ELEMENTOS DE INTERACCIÓN (Móvil vs Desktop)
+   ELEMENTOS DE INTERACCIÓN MÓVIL
 ========================= */
 
 #mobile-hint{
@@ -448,31 +447,41 @@ canvas{
 .mobile-down  { left:37px; top:37px; }
 .mobile-right { left:74px; top:37px; }
 
-/* Botones rápidos verticales (Derecha inferior) */
+/* Botones rápidos verticales (Derecha inferior: Vistas y Centrar) */
 #mobile-quick{
     display:flex;
     position:fixed;
     z-index:50;
     right:12px;
-    bottom:max(190px, 30vh);
+    bottom:max(185px, 28vh);
     flex-direction:column;
-    gap:5px;
+    gap:6px;
 }
 
 .quick-btn{
-    width:34px;
-    height:34px;
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:9px;
-    background:rgba(15,40,28,.88);
+    width:36px;
+    height:36px;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:10px;
+    background:rgba(15,40,28,.9);
     color:white;
-    font-size:13px;
+    font-size:15px;
     display:flex;
     align-items:center;
     justify-content:center;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);
+    cursor:pointer;
 }
 
-/* Barra de Escritorio (Oculta en pantallas táctiles chicas) */
+.quick-btn:active{
+    transform:scale(0.92);
+    background:rgba(25,65,45,.95);
+}
+
+/* =========================
+   VERSIÓN DE ESCRITORIO (PC / Tablets grandes)
+========================= */
+
 #toolbar{
     display:none;
 }
